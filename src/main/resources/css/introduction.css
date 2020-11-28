@@ -1,0 +1,40 @@
+
+
+
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2A5058;
+    -fx-effect: dropshadow( gaussian , rgba(214, 66, 20, 0.5), 0,0,0,1 );
+    -fx-background-color: #5f9ea0;
+}
+#tableViewIntroduction{
+    -fx-font-size: 10px;
+    -fx-font-family: "Arial Black";
+    -fx-fill: #2A5058;
+    -fx-background-color: #5f9ea0;
+
+}
+
+.table-row-cell:selected{
+    -fx-background-color: linear-gradient(#536976,#5f9ea0);
+}
+
+#labelWelcome{
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman";
+    -fx-background-color: none;
+    -fx-effect: dropshadow(three-pass-box, rgb(16, 106, 109), 10, 0, 0, 0);
+
+}
+
+
+#ButtonAccountUser:hover{
+    -fx-background-color: #73b0b1 ;
+}
+
+#ButtonAccountUser{
+    -fx-background-color: linear-gradient(#5f9ea0,#536976);
+
+}

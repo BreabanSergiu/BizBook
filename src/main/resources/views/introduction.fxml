@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="521.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/introduction.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.IntroductionController">
+   <children>
+      <Label fx:id="labelWelcome" layoutX="220.0" layoutY="27.0" text="Welcome" />
+      <Button fx:id="ButtonAccountUser" layoutX="406.0" layoutY="353.0" mnemonicParsing="false" onMouseClicked="#selectFriendsUser" text="Acount User" />
+      <TableView fx:id="tableViewIntroduction" layoutX="89.0" layoutY="79.0" prefHeight="243.0" prefWidth="344.0">
+        <columns>
+          <TableColumn fx:id="tableColumnFirstName" prefWidth="168.0" text="First Name" />
+          <TableColumn fx:id="tableColumnLastName" prefWidth="175.0" text="Last Name" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

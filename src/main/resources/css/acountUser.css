@@ -1,0 +1,61 @@
+
+
+.label {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2A5058;
+    -fx-font-family: "Arial Black";
+    -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
+
+}
+
+#tableColumnYourFriends{
+    -fx-background-color: #92acbc;
+
+}
+
+#tableColumnFirstName{
+    -fx-background-color: #c1dae9;
+
+}
+
+#tableColumnLastName{
+    -fx-background-color: #c1dae9;
+
+}
+
+
+#buttonAddFriendship:hover{
+    -fx-background-color: #73b0b1;
+}
+#buttonAddFriendship{
+    -fx-background-color: linear-gradient(#91c3c4, #647f8f);
+}
+
+#buttonDeleteFriendship:hover{
+    -fx-background-color: #73b0b1;
+}
+#buttonDeleteFriendship{
+    -fx-background-color: linear-gradient(#91c3c4, #647f8f);
+
+}
+
+#buttonFriendshipRequest:hover{
+    -fx-background-color: #73b0b1;
+}
+#buttonFriendshipRequest{
+    -fx-background-color: linear-gradient(#91c3c4, #647f8f);
+}
+
+
+#labelUserName{
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman";
+    -fx-background-color: none;
+    -fx-effect: dropshadow(three-pass-box, rgb(16, 106, 109), 10, 0, 0, 0);
+    -fx-border-color: linear-gradient(#91c3c4, #647f8f);
+    -fx-border-width: 5 2 5 2;
+    -fx-border-radius: 10;
+}
+
