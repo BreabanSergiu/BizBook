@@ -16,13 +16,18 @@ public class FriendshipRequest extends Message {
         this.status = status;
     }
 
-    public String getFirstName(){
+    public String getFirstNameFrom(){
         return getFrom().getFirstName();
     }
 
-    public String getLastName(){
+    public String getLastNameFrom(){
         return getFrom().getLastName();
     }
+
+    public String getLastNameTo(){return getTo().get(0).getLastName();}
+
+    public String getFirstNameTo(){return getTo().get(0).getFirstName();}
+
 
     @Override
     public String toString() {

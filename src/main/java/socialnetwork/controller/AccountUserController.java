@@ -69,7 +69,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
 
     public void deleteFriendship(){
         UserDTO userDTO = tableViewAccountUser.getSelectionModel().getSelectedItem();
-        if(selectedUserDTO != null){
+        if(userDTO != null){
             Long selectedUserID = selectedUserDTO.getId();
             Long userId = userDTO.getId();
 
@@ -84,7 +84,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             tableViewAccountUser.getSelectionModel().clearSelection();
 
         }
-        if(userDTO == null)
+       else
         {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Nothing selected");
             alert.show();

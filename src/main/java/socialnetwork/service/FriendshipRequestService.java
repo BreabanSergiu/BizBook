@@ -61,8 +61,10 @@ public class FriendshipRequestService implements Observable<FriendshipRequestCha
      */
     public FriendshipRequest deleteRequest(Long id){
         FriendshipRequest friendshipRequest =  requestRepository.delete(id);
-
-        friendshipRequestValidator.validateDelete(friendshipRequest);
+        if(friendshipRequest != null){
+            notifyObserver(new FriendshipRequestChangeEvent(ChangeEventType.DELETE,friendshipRequest));
+        }
+       // friendshipRequestValidator.validateDelete(friendshipRequest);
         return friendshipRequest;
 
     }
@@ -142,6 +144,26 @@ public class FriendshipRequestService implements Observable<FriendshipRequestCha
     @Override
     public void notifyObserver(FriendshipRequestChangeEvent friendshipChangeEvent) {
         observers.stream().forEach(observer -> observer.update(friendshipChangeEvent));
+    }
+
+    /**
+     *
+     * @param id id of user
+     * @return list of friendship send from user with id specified, in panding status
+     */
+    public List<FriendshipRequest> getAllRequestTo(Long id) {
+
+        Iterable<FriendshipRequest> listRequest = requestRepository.findAll();
+
+        List<FriendshipRequest> listPendingRequest = new ArrayList<>();
+        listRequest.forEach(request->{
+            if(request.getFrom().getId().equals(id) && request.getStatus().equals("pending")){
+                listPendingRequest.add(request);
+            }
+        });
+
+        return listPendingRequest;
+
     }
 }
 
