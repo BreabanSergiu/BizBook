@@ -69,6 +69,9 @@ public class FriendshipRequestViewController implements Observer<FriendshipReque
     TableColumn<FriendshipRequest,String> tableColumnFromTo;
 
     @FXML
+    /**
+     * intialize the friendship request view controller
+     */
     public void initialize(){
         tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("FirstNameFrom"));
         tableColumnLastName.setCellValueFactory(new PropertyValueFactory<>("LastNameFrom"));
