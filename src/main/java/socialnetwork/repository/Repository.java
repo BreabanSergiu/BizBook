@@ -51,7 +51,6 @@ public interface Repository<ID, E extends Entity<ID>> {
      *                   if the given id is null.
      */
     E delete(ID id);
-
     /**
      *
      * @param entity
