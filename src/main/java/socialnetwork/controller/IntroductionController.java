@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import socialnetwork.domain.UserDTO;
 import socialnetwork.service.FriendshipRequestService;
 import socialnetwork.service.FriendshipService;
+import socialnetwork.service.MessageService;
 import socialnetwork.service.UserService;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class IntroductionController {
     FriendshipService friendshipService;
     FriendshipRequestService friendshipRequestService;
     ObservableList<UserDTO> modelUserDTO = FXCollections.observableArrayList();
+    MessageService messageService;
 
     @FXML
     TableColumn<UserDTO, String> tableColumnFirstName;
@@ -80,7 +82,7 @@ public class IntroductionController {
             Scene scene = new Scene(root);
             accountUserStage.setScene(scene);
             AccountUserController accountUserController = loader.getController();
-            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService);
+            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService);
             introductionStage.hide();
             accountUserStage.show();
         } catch ( IOException e) {
@@ -90,5 +92,9 @@ public class IntroductionController {
 
     public void setFriendshipRequestService(FriendshipRequestService friendshipRequestService) {
         this.friendshipRequestService = friendshipRequestService;
+    }
+
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 }

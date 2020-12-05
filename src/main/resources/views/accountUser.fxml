@@ -23,5 +23,6 @@
                 <Font size="22.0" />
             </font></Label>
       <Button fx:id="buttonFriendshipRequest" layoutX="437.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#viewFriendshipRequest" prefHeight="46.0" prefWidth="158.0" text="View Friendship Request" />
+      <Button fx:id="butonMessages" layoutX="482.0" layoutY="364.0" mnemonicParsing="false" text="Messages" onMouseClicked="#viewMessages"/>
     </children>
 </AnchorPane>
