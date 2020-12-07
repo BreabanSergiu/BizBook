@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendshipRequestViewController">
+<AnchorPane prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendshipRequestViewController">
    <children>
       <TableView fx:id="tableViewFriendshipRequest" layoutX="29.0" layoutY="70.0" prefHeight="305.0" prefWidth="403.0">
         <columns>
@@ -26,6 +26,6 @@
       <Button fx:id="buttonRejected" layoutX="486.0" layoutY="301.0" mnemonicParsing="false" onMouseClicked="#rejectedFriendshipRequest" text="Rejected" />
       <Button fx:id="buttonFrom" layoutX="29.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#viewListOfFriendshipRequestFrom" text="From" />
       <Button fx:id="buttonTo" layoutX="76.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#viewListOfFriendshipRequestTo" text="  To   " />
-      <Button fx:id="buttonUnsend" layoutX="489.0" layoutY="200.0" mnemonicParsing="false" text="Unsend" onMouseClicked="#deleteFriendshipRequest"/>
+      <Button fx:id="buttonUnsend" layoutX="489.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#deleteFriendshipRequest" text="Unsend" />
    </children>
 </AnchorPane>

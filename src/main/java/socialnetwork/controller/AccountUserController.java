@@ -35,6 +35,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     FriendshipRequestService friendshipRequestService;
     MessageService messageService;
     UserDTO selectedUserDTO;
+    Stage accountUserStage;
 
     @FXML
     Button buttonAddFriendship;
@@ -49,6 +50,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     @FXML
     TableView<UserDTO> tableViewAccountUser;
 
+
+
+
     @FXML
     void initialize() {
         tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("firstName"));
@@ -57,19 +61,42 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     }
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
-                       FriendshipRequestService friendshipRequestService,MessageService messageService) {
+                       FriendshipRequestService friendshipRequestService,MessageService messageService,Stage accountUserStage) {
         this.friendshipRequestService = friendshipRequestService;
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.selectedUserDTO = selectedUserDTO;
         this.messageService = messageService;
+        this.accountUserStage = accountUserStage;
         friendshipService.addObserver(this);
         if (selectedUserDTO != null) {
             labelUserName.setText("Hello, " + selectedUserDTO.getFirstName()+" "+selectedUserDTO.getLastName());
-//            Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
             initModel();
         }
     }
+
+    private void initModel(){
+        Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
+        List<UserDTO> listFriends = new ArrayList();
+        friendships.forEach(friendship -> {
+            if(friendship.getId().getLeft().equals(selectedUserDTO.getId()))
+            {
+                listFriends.add(userService.getUserDTO(friendship.getId().getRight()));
+            }
+            else
+            {
+                listFriends.add(userService.getUserDTO(friendship.getId().getLeft()));
+
+            }
+        });
+        if (!friendships.iterator().hasNext()) {
+            model.setAll(listFriends);
+            tableViewAccountUser.setPlaceholder(new Label("You have no added friends"));
+        } else {
+            model.setAll(listFriends);
+        }
+    }
+
 
     public void deleteFriendship(){
         UserDTO userDTO = tableViewAccountUser.getSelectionModel().getSelectedItem();
@@ -86,6 +113,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
                 friendshipService.deleteFriendship(new Tuple<>(userId,selectedUserID));
             }
             tableViewAccountUser.getSelectionModel().clearSelection();
+
 
         }
        else
@@ -111,6 +139,12 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
 
             AddFriendshipViewController addFriendshipViewController = loader.getController();
 
+            addFriendshipRequestStage.setOnCloseRequest(event -> {
+                accountUserStage.show();
+            });
+            accountUserStage.hide();
+
+
             addFriendshipViewController.setFriendshipService(friendshipService);
             addFriendshipViewController.setUserService(userService,selectedUserDTO);
             addFriendshipViewController.setFriendshipRequestService(friendshipRequestService);
@@ -124,27 +158,6 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
 
     }
 
-    private void initModel(){
-        Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
-        List<UserDTO> listFriends = new ArrayList();
-        friendships.forEach(friendship -> {
-            if(friendship.getId().getLeft().equals(selectedUserDTO.getId()))
-            {
-                listFriends.add(userService.getUserDTO(friendship.getId().getRight()));
-            }
-            else
-            {
-                listFriends.add(userService.getUserDTO(friendship.getId().getLeft()));
-
-            }
-        });
-        if (!friendships.iterator().hasNext()) {
-            model.setAll(listFriends);
-            tableViewAccountUser.setPlaceholder(new Label("You have no added friends"));
-        } else {
-            model.setAll(listFriends);
-        }
-    }
 
     public void viewFriendshipRequest(){
             try{
@@ -157,6 +170,11 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
                 frienshipRequestViewStage.setTitle("Friendship Request");
                 frienshipRequestViewStage.getIcons().add(new Image(getClass().getResourceAsStream("/css/1.jpg")));
                 frienshipRequestViewStage.show();
+
+                frienshipRequestViewStage.setOnCloseRequest(event -> {
+                    accountUserStage.show();
+                });
+                accountUserStage.hide();
 
               FriendshipRequestViewController friendshipRequestViewController = loader.getController();
                friendshipRequestViewController.setFriendshipRequestService(friendshipRequestService,selectedUserDTO);
@@ -187,6 +205,12 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
 
             MessageViewController messageViewController = loader.getController();
 
+            messageViewStage.setOnCloseRequest(event -> {
+                accountUserStage.show();
+            });
+
+
+            accountUserStage.hide();
 
             messageViewController.setFriendshipService(friendshipService);
             messageViewController.setSelectedUserDTO(selectedUserDTO);

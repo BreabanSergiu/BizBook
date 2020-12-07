@@ -82,7 +82,7 @@ public class IntroductionController {
             Scene scene = new Scene(root);
             accountUserStage.setScene(scene);
             AccountUserController accountUserController = loader.getController();
-            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService);
+            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService,accountUserStage);
             introductionStage.hide();
             accountUserStage.show();
         } catch ( IOException e) {

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="464.0" prefWidth="636.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/acountUser.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.AccountUserController">
+<AnchorPane prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/acountUser.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.AccountUserController">
     <children>
         <TableView fx:id="tableViewAccountUser" layoutX="40.0" layoutY="92.0" prefHeight="285.0" prefWidth="354.0">
             <columns>
@@ -23,6 +23,6 @@
                 <Font size="22.0" />
             </font></Label>
       <Button fx:id="buttonFriendshipRequest" layoutX="437.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#viewFriendshipRequest" prefHeight="46.0" prefWidth="158.0" text="View Friendship Request" />
-      <Button fx:id="butonMessages" layoutX="482.0" layoutY="364.0" mnemonicParsing="false" text="Messages" onMouseClicked="#viewMessages"/>
+      <Button fx:id="butonMessages" layoutX="482.0" layoutY="364.0" mnemonicParsing="false" onMouseClicked="#viewMessages" text="Messages" />
     </children>
 </AnchorPane>
