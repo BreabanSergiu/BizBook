@@ -39,6 +39,11 @@ public class MessageService {
         return repositoryMessage.save(message);
     }
 
+    /**
+     * return all receive messages of user with long id
+     * @param id
+     * @return
+     */
     public Iterable<Message> getReceiveMessageUser(Long id){
 
         Iterable<Message> listAllMessage = repositoryMessage.findAll();

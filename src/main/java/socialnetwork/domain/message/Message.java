@@ -2,6 +2,7 @@ package socialnetwork.domain.message;
 
 import socialnetwork.domain.Entity;
 import socialnetwork.domain.User;
+import socialnetwork.utils.Constants;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +47,9 @@ public class Message extends Entity<Long> {
         return from;
     }
 
+    public String getFromFirstName(){return from.getFirstName();}
+    public String getFromLastName(){return from.getLastName();}
+
     public void setFrom(User from) {
         this.from = from;
     }
@@ -69,6 +73,8 @@ public class Message extends Entity<Long> {
     public LocalDateTime getDate() {
         return date;
     }
+
+    public String getDateString(){ return date.format(Constants.DATE_TIME_FORMATTER);}
 
     public void setDate(LocalDateTime date) {
         this.date = date;

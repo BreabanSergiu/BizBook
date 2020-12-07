@@ -19,12 +19,14 @@ import socialnetwork.service.UserService;
 import java.lang.management.ThreadMXBean;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MessageViewController {
 
     ObservableList<UserDTO> modelUnselected = FXCollections.observableArrayList();
     ObservableList<UserDTO> modelSelected = FXCollections.observableArrayList();
+    ObservableList<Message> modelInbox = FXCollections.observableArrayList();
 
     UserService userService;
     MessageService messageService;
@@ -40,14 +42,11 @@ public class MessageViewController {
     @FXML
     TableView<UserDTO> tableViewSelected;
 
-
-
     @FXML
     TextField textFieldMessage;
 
     @FXML
     TableColumn<UserDTO,String> tableColumnFirstNameUnselected;
-
 
     @FXML
     TableColumn<UserDTO,String> tableColumnFirstNameSelected;
@@ -58,6 +57,23 @@ public class MessageViewController {
     @FXML
     TableColumn<UserDTO,String> tableColumnLastNameSelected;
 
+    @FXML
+    TableView<Message> tableViewInbox;
+
+    @FXML
+    TableColumn<Message,String> tableColumnFirstName;
+
+    @FXML
+    TableColumn<Message,String > tableColumnLastName;
+
+    @FXML
+    TableColumn<Message,String> tableColumnDate;
+
+    @FXML
+    TableColumn<Message,String> tableColumnMessage;
+
+    @FXML
+    TextField textFieldMessageInbox;
 
     @FXML
     public void initialize(){
@@ -66,8 +82,19 @@ public class MessageViewController {
         tableColumnFirstNameSelected.setCellValueFactory(new PropertyValueFactory<UserDTO,String>("FirstName"));
         tableColumnLastNameSelected.setCellValueFactory(new PropertyValueFactory<UserDTO,String>("LastName"));
         tableColumnLastNameUnselected.setCellValueFactory(new PropertyValueFactory<UserDTO,String>("LastName"));
+
+        //for inbox
+        tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<Message,String>("FromFirstName"));
+        tableColumnLastName.setCellValueFactory(new PropertyValueFactory<Message,String>("FromLastName"));
+        tableColumnDate.setCellValueFactory(new PropertyValueFactory<Message,String>("DateString"));
+        tableColumnMessage.setCellValueFactory(new PropertyValueFactory<Message,String>("Message"));
+
+
+
+
         tableViewUnselected.setItems(modelUnselected);
         tableViewSelected.setItems(modelSelected);
+        tableViewInbox.setItems(modelInbox);
 
     }
 
@@ -76,11 +103,12 @@ public class MessageViewController {
         this.userService = userService;
         initModel();
 
+
     }
 
     public void setMessageService(MessageService messageService) {
         this.messageService = messageService;
-
+        initModelInbox();
     }
 
     private void initModel(){
@@ -105,6 +133,20 @@ public class MessageViewController {
             refreshTables(listFriends);
 
 
+        }
+    }
+    
+    private void initModelInbox(){
+        Iterable<Message> messages = this.messageService.getReceiveMessageUser(selectedUserDTO.getId());
+        List<Message> listMessages = new ArrayList<>();
+
+        messages.forEach(listMessages::add);
+
+        if(! messages.iterator().hasNext()){
+            modelInbox.setAll(listMessages);
+            tableViewInbox.setPlaceholder(new Label("you have no receive message"));
+        }else {
+            modelInbox.setAll(listMessages);
         }
     }
 
@@ -184,5 +226,32 @@ public class MessageViewController {
             Alert alert= new Alert(Alert.AlertType.ERROR,"Please insert a text message");
             alert.show();
         }
+    }
+
+    public void replyMessage() {
+        String replyMessage = textFieldMessageInbox.getText();
+        Message selectedMessage = tableViewInbox.getSelectionModel().getSelectedItem();
+        User user = userService.getUser(selectedUserDTO.getId());
+
+        if(selectedMessage != null){
+            if(!replyMessage.matches("[ ]* ")){
+                Message messageResponse = new Message(user, Arrays.asList(selectedMessage.getFrom()),replyMessage,LocalDateTime.now());
+                messageService.addMessage(messageResponse);
+                textFieldMessageInbox.clear();
+                tableViewInbox.getSelectionModel().clearSelection();
+                Alert alert= new Alert(Alert.AlertType.CONFIRMATION,"Reply message sent");
+                alert.show();
+            }else {
+                Alert alert= new Alert(Alert.AlertType.ERROR,"Please insert a text message");
+                alert.show();
+            }
+        }
+        else {
+            Alert alert= new Alert(Alert.AlertType.ERROR,"Nothing selected");
+            alert.show();
+        }
+
+
+
     }
 }
