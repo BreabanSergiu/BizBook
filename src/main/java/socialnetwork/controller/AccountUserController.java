@@ -10,6 +10,7 @@ package socialnetwork.controller;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.Image;
+        import javafx.scene.input.MouseEvent;
         import javafx.scene.layout.AnchorPane;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
@@ -18,6 +19,7 @@ package socialnetwork.controller;
         import socialnetwork.domain.UserDTO;
         import socialnetwork.service.FriendshipRequestService;
         import socialnetwork.service.FriendshipService;
+        import socialnetwork.service.MessageService;
         import socialnetwork.service.UserService;
         import socialnetwork.utils.events.FriendshipChangeEvent;
         import socialnetwork.utils.observer.Observer;
@@ -31,6 +33,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     UserService userService;
     FriendshipService friendshipService;
     FriendshipRequestService friendshipRequestService;
+    MessageService messageService;
     UserDTO selectedUserDTO;
 
     @FXML
@@ -54,15 +57,16 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     }
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
-                       FriendshipRequestService friendshipRequestService) {
+                       FriendshipRequestService friendshipRequestService,MessageService messageService) {
         this.friendshipRequestService = friendshipRequestService;
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.selectedUserDTO = selectedUserDTO;
+        this.messageService = messageService;
         friendshipService.addObserver(this);
         if (selectedUserDTO != null) {
             labelUserName.setText("Hello, " + selectedUserDTO.getFirstName()+" "+selectedUserDTO.getLastName());
-            Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
+//            Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
             initModel();
         }
     }
@@ -166,5 +170,33 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     @Override
     public void update(FriendshipChangeEvent friendshipChangeEvent) {
             initModel();
+    }
+
+    public void viewMessages() {
+
+        try{
+            FXMLLoader loader  = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/messageView.fxml"));
+
+            AnchorPane root = loader.load();
+
+            Stage messageViewStage = new Stage();
+            messageViewStage.setScene(new Scene(root));
+            messageViewStage.setTitle("Message");
+            messageViewStage.show();
+
+            MessageViewController messageViewController = loader.getController();
+
+
+            messageViewController.setFriendshipService(friendshipService);
+            messageViewController.setSelectedUserDTO(selectedUserDTO);
+            messageViewController.setUserService(userService);
+
+            messageViewController.setMessageService(messageService);
+          
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
