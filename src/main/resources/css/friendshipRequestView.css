@@ -1,0 +1,69 @@
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #176473;
+    -fx-font-family: "Arial Black";
+    -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
+
+}
+
+#buttonSignOff:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonSignOff{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+#buttonRejected:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonRejected{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+
+#buttonUnsend:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonUnsend{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+
+#buttonApproved:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonApproved{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+
+#buttonFrom:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonFrom{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+#buttonTo:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonTo{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+
+
+

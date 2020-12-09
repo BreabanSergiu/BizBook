@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.User;
 import socialnetwork.domain.UserDTO;
@@ -40,6 +42,10 @@ public class AddFriendshipViewController {
     TableColumn<UserDTO,String> tableCollumnLastName;
     @FXML
     TextField textFieldMessage;
+
+    Stage accountUserStage;
+    Stage introductionStage;
+    Stage addFriendshipRequestStage;
 
     @FXML
     public void initialize(){
@@ -105,6 +111,8 @@ public class AddFriendshipViewController {
 
             try {
                 friendshipRequestService.addRequest(friendshipRequest);
+                tableViewNonFriends.getSelectionModel().clearSelection();
+                textFieldMessage.clear();
                 Alert alert =  new Alert(Alert.AlertType.CONFIRMATION,"the friendship request has been sent!");
                 alert.show();
             }
@@ -115,5 +123,17 @@ public class AddFriendshipViewController {
 
         }
 
+    }
+
+    public void exitButtonOnAction() {
+        addFriendshipRequestStage.hide();
+        accountUserStage.hide();
+        introductionStage.show();
+    }
+
+    public void setStages(Stage accountUserStage, Stage introductionStage, Stage addFriendshipRequestStage) {
+        this.accountUserStage = accountUserStage;
+        this.introductionStage = introductionStage;
+        this.addFriendshipRequestStage = addFriendshipRequestStage;
     }
 }

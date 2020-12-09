@@ -1,9 +1,9 @@
 
 
 .label {
-    -fx-font-size: 17px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2A5058;
+    -fx-text-fill: #176473;
     -fx-font-family: "Arial Black";
     -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
 
@@ -24,27 +24,35 @@
 
 }
 
-
 #buttonAddFriendship:hover{
-    -fx-background-color: #73b0b1;
+    -fx-background-color: #a4efef;
 }
 #buttonAddFriendship{
-    -fx-background-color: linear-gradient(#91c3c4, #647f8f);
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
 }
 
 #buttonDeleteFriendship:hover{
-    -fx-background-color: #73b0b1;
+    -fx-background-color: #a4efef;
 }
 #buttonDeleteFriendship{
-    -fx-background-color: linear-gradient(#91c3c4, #647f8f);
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
 
 }
 
 #buttonFriendshipRequest:hover{
-    -fx-background-color: #73b0b1;
+    -fx-background-color: #a4efef;
 }
 #buttonFriendshipRequest{
-    -fx-background-color: linear-gradient(#91c3c4, #647f8f);
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+#butonMessages:hover{
+    -fx-background-color: #a4efef;
+
+}
+#butonMessages{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+
 }
 
 

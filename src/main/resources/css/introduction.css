@@ -2,26 +2,20 @@
 
 
 .label {
-    -fx-font-size: 12px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2A5058;
-    -fx-effect: dropshadow( gaussian , rgba(214, 66, 20, 0.5), 0,0,0,1 );
+    -fx-text-fill: #176473;
+  //  -fx-effect: dropshadow( gaussian , rgba(214, 66, 20, 0.5), 0,0,0,1 );
     -fx-background-color: #5f9ea0;
 }
-#tableViewIntroduction{
-    -fx-font-size: 10px;
-    -fx-font-family: "Arial Black";
-    -fx-fill: #2A5058;
-    -fx-background-color: #5f9ea0;
 
-}
 
 .table-row-cell:selected{
     -fx-background-color: linear-gradient(#536976,#5f9ea0);
 }
 
 #labelWelcome{
-    -fx-font-size: 26px;
+    -fx-font-size: 30px;
     -fx-font-weight: bold;
     -fx-font-family: "Times New Roman";
     -fx-background-color: none;
@@ -31,10 +25,33 @@
 
 
 #ButtonAccountUser:hover{
-    -fx-background-color: #73b0b1 ;
+    -fx-background-color: #a4efef;
 }
 
 #ButtonAccountUser{
-    -fx-background-color: linear-gradient(#5f9ea0,#536976);
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
 
+}
+
+#passwordFiled{
+    -fx-background-image: url('key1.png');
+    -fx-background-position: 93%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 10;
+}
+
+#textFieldUsername{
+    -fx-background-image: url('emailPH.jpg');
+    -fx-background-position: 93%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 10;
+
+}
+#labelCreateYourAccount{
+    -fx-background-color: false;
+    -fx-text-fill: #000000;
+}
+
+#ButtonAccountUser{
+    -fx-background-radius: 10;
 }

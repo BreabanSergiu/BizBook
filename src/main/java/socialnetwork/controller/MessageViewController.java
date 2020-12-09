@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.User;
 import socialnetwork.domain.UserDTO;
@@ -16,7 +17,6 @@ import socialnetwork.service.MessageService;
 import socialnetwork.service.UserService;
 
 
-import java.lang.management.ThreadMXBean;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +34,10 @@ public class MessageViewController {
     UserDTO selectedUserDTO;
     List<UserDTO> listUsersSelected = new ArrayList<>();
     List<UserDTO> listUsersUnselected  = new ArrayList<>();
+
+    Stage accountUserStage;
+    Stage introductionStage;
+    Stage messageViewStage;
 
 
     @FXML
@@ -251,7 +255,28 @@ public class MessageViewController {
             alert.show();
         }
 
+    }
 
+
+
+
+    public void setStages(Stage accountUserStage, Stage introductionStage,Stage messageViewStage) {
+        this.accountUserStage=accountUserStage;
+        this.introductionStage = introductionStage;
+        this.messageViewStage = messageViewStage;
+    }
+
+
+
+
+    public void exitButtonOnAction() {
+
+        messageViewStage.hide();
+        accountUserStage.hide();
+        introductionStage.show();
 
     }
+
+
+
 }
