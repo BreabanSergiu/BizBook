@@ -16,6 +16,7 @@ package socialnetwork.controller;
         import javafx.stage.Stage;
         import socialnetwork.domain.Friendship;
         import socialnetwork.domain.Tuple;
+        import socialnetwork.domain.User;
         import socialnetwork.domain.UserDTO;
         import socialnetwork.service.FriendshipRequestService;
         import socialnetwork.service.FriendshipService;
@@ -25,6 +26,7 @@ package socialnetwork.controller;
         import socialnetwork.utils.observer.Observer;
 
         import java.io.IOException;
+        import java.security.SecureRandom;
         import java.util.ArrayList;
         import java.util.List;
 
@@ -36,6 +38,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     MessageService messageService;
     UserDTO selectedUserDTO;
     Stage accountUserStage;
+    Stage introductionStage;
+
 
     @FXML
     Button buttonAddFriendship;
@@ -61,13 +65,15 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     }
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
-                       FriendshipRequestService friendshipRequestService,MessageService messageService,Stage accountUserStage) {
+                       FriendshipRequestService friendshipRequestService, MessageService messageService) {
+
         this.friendshipRequestService = friendshipRequestService;
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.selectedUserDTO = selectedUserDTO;
         this.messageService = messageService;
-        this.accountUserStage = accountUserStage;
+        System.out.println(selectedUserDTO);
+
         friendshipService.addObserver(this);
         if (selectedUserDTO != null) {
             labelUserName.setText("Hello, " + selectedUserDTO.getFirstName()+" "+selectedUserDTO.getLastName());
@@ -148,7 +154,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             addFriendshipViewController.setFriendshipService(friendshipService);
             addFriendshipViewController.setUserService(userService,selectedUserDTO);
             addFriendshipViewController.setFriendshipRequestService(friendshipRequestService);
-
+            addFriendshipViewController.setStages(accountUserStage, introductionStage, addFriendshipRequestStage);
             addFriendshipRequestStage.show();
 
         }catch (IOException e){
@@ -179,6 +185,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
               FriendshipRequestViewController friendshipRequestViewController = loader.getController();
                friendshipRequestViewController.setFriendshipRequestService(friendshipRequestService,selectedUserDTO);
                 friendshipRequestViewController.setFriendshipService(friendshipService);
+                friendshipRequestViewController.setStages(accountUserStage, introductionStage, frienshipRequestViewStage);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -215,12 +222,16 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             messageViewController.setFriendshipService(friendshipService);
             messageViewController.setSelectedUserDTO(selectedUserDTO);
             messageViewController.setUserService(userService);
-
             messageViewController.setMessageService(messageService);
-          
+            messageViewController.setStages(accountUserStage, introductionStage, messageViewStage);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setStages(Stage accountUserStage, Stage introductionStage) {
+        this.introductionStage = introductionStage;
+        this.accountUserStage = accountUserStage;
     }
 }

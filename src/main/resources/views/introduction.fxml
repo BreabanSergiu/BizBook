@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="521.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/introduction.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.IntroductionController">
+<AnchorPane prefHeight="356.0" prefWidth="704.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/introduction.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.IntroductionController">
    <children>
-      <Label fx:id="labelWelcome" layoutX="220.0" layoutY="27.0" text="Welcome" />
-      <Button fx:id="ButtonAccountUser" layoutX="406.0" layoutY="353.0" mnemonicParsing="false" onMouseClicked="#selectFriendsUser" text="Acount User" />
-      <TableView fx:id="tableViewIntroduction" layoutX="89.0" layoutY="79.0" prefHeight="243.0" prefWidth="344.0">
-        <columns>
-          <TableColumn fx:id="tableColumnFirstName" prefWidth="168.0" text="First Name" />
-          <TableColumn fx:id="tableColumnLastName" prefWidth="175.0" text="Last Name" />
-        </columns>
-      </TableView>
+      <Label fx:id="labelWelcome" layoutX="436.0" layoutY="53.0" text="User Login" />
+      <Button fx:id="ButtonAccountUser" layoutX="424.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#loginUser" prefHeight="27.0" prefWidth="161.0" text="Login" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="135.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../preview.png" />
+         </image>
+      </ImageView>
+      <PasswordField fx:id="passwordFiled" layoutX="424.0" layoutY="157.0" promptText=" Password" />
+      <TextField fx:id="textFieldUsername" layoutX="424.0" layoutY="119.0" promptText="Username or Email" />
+      <Label fx:id="labelCreateYourAccount" layoutX="440.0" layoutY="293.0" text="Create your Account" />
    </children>
 </AnchorPane>

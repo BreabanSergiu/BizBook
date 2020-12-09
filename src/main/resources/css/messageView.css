@@ -1,0 +1,21 @@
+.label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #176473;
+    -fx-font-family: "Arial Black";
+    -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
+
+}
+
+#tabPane{
+    -fx-background-color: #e9e6e6;
+}
+
+#buttonSignOff:hover{
+    -fx-background-color: #a4efef;
+}
+#buttonSignOff{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+

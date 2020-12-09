@@ -3,29 +3,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendshipRequestViewController">
+
+<AnchorPane prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/friendshipRequestView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendshipRequestViewController">
+
    <children>
-      <TableView fx:id="tableViewFriendshipRequest" layoutX="29.0" layoutY="70.0" prefHeight="305.0" prefWidth="403.0">
+      <TableView fx:id="tableViewFriendshipRequest" layoutX="14.0" layoutY="70.0" prefHeight="323.0" prefWidth="516.0">
         <columns>
-            <TableColumn prefWidth="75.0" text="Friendship Request">
+            <TableColumn prefWidth="514.0" text="Friendship Request">
                <columns>
-                <TableColumn fx:id="tableColumnFromTo" prefWidth="75.0" text="From">
+                <TableColumn fx:id="tableColumnFromTo" prefWidth="110.0" text="From">
                      <columns>
-                        <TableColumn fx:id="tableColumnFirstName" prefWidth="75.0" text="First Name" />
-                        <TableColumn fx:id="tableColumnLastName" prefWidth="75.0" text="Last Name" />
+                        <TableColumn fx:id="tableColumnFirstName" prefWidth="95.0" text="First Name" />
+                        <TableColumn fx:id="tableColumnLastName" prefWidth="114.0" text="Last Name" />
                      </columns>
                   </TableColumn>
-                <TableColumn fx:id="tableColumnMessage" prefWidth="75.0" text="Message" />
-                  <TableColumn fx:id="tableColumnSentData" prefWidth="81.0" text="Sent Data" />
-                  <TableColumn fx:id="tableColumnStatus" prefWidth="92.0" text="Status" />
+                <TableColumn fx:id="tableColumnMessage" minWidth="0.0" prefWidth="113.0" text="Message" />
+                  <TableColumn fx:id="tableColumnSentData" prefWidth="104.0" text="Sent Data" />
+                  <TableColumn fx:id="tableColumnStatus" prefWidth="88.0" text="Status" />
                </columns>
             </TableColumn>
         </columns>
       </TableView>
-      <Button fx:id="buttonApproved" layoutX="483.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#approvedFriendshipRequest" text="Approved" />
-      <Button fx:id="buttonRejected" layoutX="486.0" layoutY="301.0" mnemonicParsing="false" onMouseClicked="#rejectedFriendshipRequest" text="Rejected" />
+      <Button fx:id="buttonApproved" layoutX="549.0" layoutY="132.0" mnemonicParsing="false" onMouseClicked="#approvedFriendshipRequest" text="Approved" />
+      <Button fx:id="buttonRejected" layoutX="552.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#rejectedFriendshipRequest" text="Rejected" />
       <Button fx:id="buttonFrom" layoutX="29.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#viewListOfFriendshipRequestFrom" text="From" />
       <Button fx:id="buttonTo" layoutX="76.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#viewListOfFriendshipRequestTo" text="  To   " />
-      <Button fx:id="buttonUnsend" layoutX="489.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#deleteFriendshipRequest" text="Unsend" />
+      <Button fx:id="buttonUnsend" layoutX="555.0" layoutY="209.0" mnemonicParsing="false" onMouseClicked="#deleteFriendshipRequest" text="Unsend" />
+      <Button fx:id="buttonSignOff" layoutX="555.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#exitButtonOnAction" text="Sign off" />
    </children>
 </AnchorPane>

@@ -38,9 +38,9 @@ public class MainFX extends Application {
 
         initView(primaryStage);
         primaryStage.setTitle("Window");
-        primaryStage.setResizable(false);
-        primaryStage.setWidth(521);
-        primaryStage.setHeight(420);
+           primaryStage.setResizable(false);
+//        primaryStage.setWidth(521);
+//        primaryStage.setHeight(420);
         primaryStage.show();
 
     }
