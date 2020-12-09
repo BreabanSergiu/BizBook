@@ -3,7 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+
 <AnchorPane prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/addFriendshipView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.AddFriendshipViewController">
+
    <children>
       <TableView fx:id="tableViewNonFriends" layoutX="14.0" layoutY="40.0" prefHeight="370.0" prefWidth="266.0">
         <columns>
@@ -14,9 +16,11 @@
                </columns></TableColumn>
         </columns>
       </TableView>
+
       <TextField fx:id="textFieldSearch" layoutX="369.0" layoutY="40.0" prefHeight="27.0" prefWidth="233.0" promptText="Search" />
       <TextField fx:id="textFieldMessage" layoutX="369.0" layoutY="86.0" prefHeight="27.0" prefWidth="233.0" promptText="Message" />
       <Button fx:id="buttonSendFriendshipRequest" layoutX="405.0" layoutY="151.0" mnemonicParsing="false" onMouseClicked="#sendFriendshipRequest" prefHeight="27.0" prefWidth="161.0" text="Send friendship request" />
       <Button fx:id="buttonSignOff" layoutX="560.0" layoutY="394.0" mnemonicParsing="false" onMouseClicked="#exitButtonOnAction" text="Sign off" />
+
    </children>
 </AnchorPane>

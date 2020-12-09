@@ -106,6 +106,7 @@ public class IntroductionController {
             AccountUserController accountUserController = loader.getController();
             accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService);
             accountUserController.setStages(accountUserStage,introductionStage);
+
             introductionStage.hide();
             accountUserStage.show();
         } catch ( IOException e) {

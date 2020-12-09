@@ -40,6 +40,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     Stage accountUserStage;
     Stage introductionStage;
 
+
     @FXML
     Button buttonAddFriendship;
     @FXML
@@ -65,6 +66,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
                        FriendshipRequestService friendshipRequestService, MessageService messageService) {
+
         this.friendshipRequestService = friendshipRequestService;
         this.friendshipService = friendshipService;
         this.userService = userService;

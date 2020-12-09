@@ -50,6 +50,8 @@
           </Tab>
         </tabs>
       </TabPane>
+
       <Button fx:id="buttonSignOff" layoutX="771.0" layoutY="414.0" mnemonicParsing="false" onMouseClicked="#exitButtonOnAction" text="Sign off" />
+
    </children>
 </AnchorPane>

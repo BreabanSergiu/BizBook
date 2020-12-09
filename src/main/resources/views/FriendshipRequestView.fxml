@@ -3,7 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+
 <AnchorPane prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/friendshipRequestView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendshipRequestViewController">
+
    <children>
       <TableView fx:id="tableViewFriendshipRequest" layoutX="14.0" layoutY="70.0" prefHeight="323.0" prefWidth="516.0">
         <columns>
