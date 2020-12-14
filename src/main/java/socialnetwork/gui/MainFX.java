@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import jdk.javadoc.internal.doclets.toolkit.MethodWriter;
 import socialnetwork.config.ApplicationContext;
 import socialnetwork.controller.IntroductionController;
 import socialnetwork.domain.Friendship;
@@ -18,10 +19,18 @@ import socialnetwork.domain.message.Message;
 import socialnetwork.domain.message.ReplyMessage;
 import socialnetwork.domain.validators.*;
 import socialnetwork.repository.Repository;
+import socialnetwork.repository.database.FriendshipDbRepository;
+import socialnetwork.repository.database.FriendshipRequestDbRepository;
+import socialnetwork.repository.database.MessageDbRepository;
+import socialnetwork.repository.database.UserDbRepository;
 import socialnetwork.repository.file.*;
 import socialnetwork.service.*;
+import socialnetwork.utils.Constants;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class MainFX extends Application {
 
@@ -61,6 +70,16 @@ public class MainFX extends Application {
 
     public static void main(String[] args) {
 
+        //db
+        final String url = ApplicationContext.getPROPERTIES().getProperty("database.socialnetwork.url");
+        final String username= ApplicationContext.getPROPERTIES().getProperty("databse.socialnetwork.username");
+        final String pasword= ApplicationContext.getPROPERTIES().getProperty("database.socialnetwork.pasword");
+        Repository<Long,User> userDbRepository = new UserDbRepository(url,username,pasword, new UserValidator());
+        Repository<Tuple<Long,Long>,Friendship> friendshipDbRepository = new FriendshipDbRepository(url,username,pasword);
+        Repository<Long,Message> messageDbRepository = new MessageDbRepository(url,username,pasword,  userDbRepository);
+        Repository<Long,FriendshipRequest> friendshipRequestDbRepository = new FriendshipRequestDbRepository(url,username,pasword,userDbRepository);
+
+        //file
         String fileName= ApplicationContext.getPROPERTIES().getProperty("data.socialnetwork.users");
         Repository<Long, User> userFileRepository = new UserFile(fileName
                 , new UserValidator());
@@ -83,15 +102,51 @@ public class MainFX extends Application {
         Repository<Long, FriendshipRequest> friendshipRequestFileRepository = new FriendshipRequestFile(fileNameFriednshipRequest
                 ,new FriendshipRequestValidator(),userFileRepository);
 
-        userService = new UserService(userFileRepository,friendshipFileRepository);
-        friendshipService = new FriendshipService(friendshipFileRepository,userFileRepository);
-        messageService = new MessageService(messageFileRepository);
+        userService = new UserService(userDbRepository,friendshipDbRepository);
+        friendshipService = new FriendshipService(friendshipDbRepository,userDbRepository);
+        messageService = new MessageService(messageDbRepository);
         replyMessageService = new ReplyMessageService(replyMessageFileRepository);
-        friendshipRequestService = new FriendshipRequestService(friendshipRequestFileRepository,friendshipFileRepository);
-
-
+        friendshipRequestService = new FriendshipRequestService(friendshipRequestDbRepository,friendshipDbRepository);
 
         launch(args);
+///--------------------reading data from databasex
+
+//        System.out.println(userDbRepository.findOne(1l));
+//        System.out.println("findAll");
+//        System.out.println(userDbRepository.findAll());
+//        User user = new User("breaban","Simona");
+//        user.setId(5L);
+        //userDbRepository.save(user);
+        //userDbRepository.delete(3l);
+        //userDbRepository.update(user);
+
+//        System.out.println(friendshipDbRepository.findOne(new Tuple<>(1L, 2L)));
+//        System.out.println(friendshipDbRepository.findAll());
+//        Friendship friendship = new Friendship(LocalDate.now());
+//        friendship.setId(new Tuple<>(1L,5L));
+// //       friendshipDbRepository.save(friendship);
+//        System.out.println(friendshipDbRepository.delete(new Tuple<>(1L,5L)));
+
+        //System.out.println(messageDbRepository.findOne(3L));
+        //System.out.println(messageDbRepository.findAll());
+//        User user1 = userDbRepository.findOne(4L);
+//        User user2 = userDbRepository.findOne(1L);
+//        User user3 = userDbRepository.findOne(2L);
+
+
+//        Message message = new Message(user2, Arrays.asList(user1,user3),"hello", LocalDateTime.now());
+//        messageDbRepository.save(message);
+//        messageDbRepository.delete(5L);
+
+//        Repository<Long,FriendshipRequest> friendshipRequestDbRepository = new FriendshipRequestDbRepository(url,username,pasword,userDbRepository);
+//        System.out.println( friendshipRequestDbRepository.findOne(1L));
+//        System.out.println(friendshipRequestDbRepository.findAll());
+//        FriendshipRequest friendshipRequest = new FriendshipRequest(user1,Arrays.asList(user3),"hey",LocalDateTime.now(),"pending");
+//
+//        friendshipRequestDbRepository.save(friendshipRequest);
+//      friendshipRequestDbRepository.delete(8L);
+//
+
 
     }
 }

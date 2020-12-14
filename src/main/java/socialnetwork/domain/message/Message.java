@@ -30,8 +30,8 @@ public class Message extends Entity<Long> {
         this.to = to;
         this.message = message;
         this.date = date;
-        idMaxMessage++;
-        setId(idMaxMessage);
+//        idMaxMessage++;
+//        setId(idMaxMessage);
     }
 
     public Message(User from, List<User> to, String message, LocalDateTime date,String trash) {
@@ -39,8 +39,8 @@ public class Message extends Entity<Long> {
         this.to = to;
         this.message = message;
         this.date = date;
-        idMaxFriendshipRequest++;
-        setId(idMaxFriendshipRequest);
+//        idMaxFriendshipRequest++;
+//        setId(idMaxFriendshipRequest);
     }
 
     public User getFrom() {

@@ -43,7 +43,7 @@ public class User extends Entity<Long>{
             friendsString.set(friendsString + friend.getFirstName() + " " + friend.getLastName() + ", ");
         });
 
-        return "Utilizator{" +
+        return "User{" +
                 " firstName= " + firstName  +
                 "  |  lastName= " + lastName +
                 "  |  friends= " + friendsString +

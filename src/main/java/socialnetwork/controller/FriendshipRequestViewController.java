@@ -81,7 +81,7 @@ public class FriendshipRequestViewController implements Observer<FriendshipReque
         tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("FirstNameFrom"));
         tableColumnLastName.setCellValueFactory(new PropertyValueFactory<>("LastNameFrom"));
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
-        tableColumnSentData.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tableColumnSentData.setCellValueFactory(new PropertyValueFactory<>("dateString"));
         tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         buttonUnsend.setVisible(false);
         tableViewFriendshipRequest.setItems(model);
