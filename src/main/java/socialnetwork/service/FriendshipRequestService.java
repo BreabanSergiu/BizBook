@@ -120,8 +120,8 @@ public class FriendshipRequestService implements Observable<FriendshipRequestCha
     public void updateFriendshipRequest(FriendshipRequest friendshipRequest, String status){
 
         FriendshipRequest friendshipRequestDeleted = deleteRequest(friendshipRequest.getId());
-        friendshipRequest.setStatus(status);
-        friendshipRequest.setDate(LocalDateTime.now());
+        friendshipRequestDeleted.setStatus(status);
+        friendshipRequestDeleted.setDate(LocalDateTime.now());
         FriendshipRequest friendshipRequest1 = addRequest(friendshipRequestDeleted);
 
         if(friendshipRequest1 == null){

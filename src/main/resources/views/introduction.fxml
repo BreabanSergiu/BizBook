@@ -8,7 +8,7 @@
    <children>
       <Label fx:id="labelWelcome" layoutX="436.0" layoutY="53.0" text="User Login" />
       <Button fx:id="ButtonAccountUser" layoutX="424.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#loginUser" prefHeight="27.0" prefWidth="161.0" text="Login" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="135.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../preview.png" />
          </image>
