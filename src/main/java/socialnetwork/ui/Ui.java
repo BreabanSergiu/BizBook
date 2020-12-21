@@ -1,6 +1,5 @@
 package socialnetwork.ui;
 
-import org.graalvm.compiler.lir.LIRInstruction;
 import socialnetwork.comunitate.Community;
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.Tuple;
@@ -472,7 +471,7 @@ public class Ui {
     private  void respondMessage() throws IOException {
         Long id = Long.parseLong(readNumber("introduce the id of the user who want to check the message= "));
 
-        Iterable<Message> filterList = messageService.getReceiveMessageUser(id);
+        Iterable<Message> filterList = messageService.getAllMessagesToUser(id);
         filterList.forEach(x-> System.out.println("Id message= "+ x.getId() +" | from= " + x.getFrom().getId() + "," + x.getFrom().getFirstName() + " " + x.getFrom().getLastName() + " |  message = " + x.getMessage()));
 
 

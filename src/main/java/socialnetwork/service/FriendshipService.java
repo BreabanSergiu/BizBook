@@ -3,6 +3,7 @@ package socialnetwork.service;
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.Tuple;
 import socialnetwork.domain.User;
+import socialnetwork.domain.message.Message;
 import socialnetwork.domain.validators.ValidationException;
 import socialnetwork.repository.Repository;
 import socialnetwork.service.validators.Validator;
@@ -112,6 +113,19 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
         observers.stream().forEach(observer->observer.update(friendshipChangeEvent));
     }
 
+
+    public int getNumberOfFriendsFromOneMounthAndYear(Long id, Integer month, Integer year){
+        final int[] nr = {0};
+        Iterable<Friendship> friendships = repositoryFriendship.findAll();
+        friendships.forEach(friendship -> {
+            if(friendship.getDate().getMonthValue() == month && friendship.getDate().getYear() == year ){
+                if(friendship.getId().getRight() == id || friendship.getId().getLeft() ==id){
+                    nr[0] += 1;
+                }
+            }
+        });
+        return nr[0];
+    }
 
 
 }

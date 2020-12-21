@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import socialnetwork.domain.Friendship;
 import socialnetwork.domain.User;
@@ -141,7 +140,7 @@ public class MessageViewController {
     }
     
     private void initModelInbox(){
-        Iterable<Message> messages = this.messageService.getReceiveMessageUser(selectedUserDTO.getId());
+        Iterable<Message> messages = this.messageService.getAllMessagesToUser(selectedUserDTO.getId());
         List<Message> listMessages = new ArrayList<>();
 
         messages.forEach(listMessages::add);
