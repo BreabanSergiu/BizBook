@@ -234,4 +234,29 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
         this.introductionStage = introductionStage;
         this.accountUserStage = accountUserStage;
     }
+
+    public void showReports() {
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/report.fxml"));
+
+            AnchorPane root = loader.load();
+
+            Stage reportViewStage = new Stage();
+            reportViewStage.setScene(new Scene(root));
+            reportViewStage.setTitle("Reports");;
+            reportViewStage.show();
+
+            ReportViewController reportViewController = loader.getController();
+            reportViewController.setMessageService(messageService);
+            reportViewController.setFriendshipService(friendshipService);
+            reportViewController.setSelectedUserDTO(selectedUserDTO);
+            reportViewController.setUserService(userService);
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

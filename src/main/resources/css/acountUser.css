@@ -55,6 +55,17 @@
 
 }
 
+#buttonReports:hover{
+    -fx-background-color: #a4efef;
+}
+
+#buttonReports{
+    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+}
+
+
+
+
 
 #labelUserName{
     -fx-font-size: 26px;

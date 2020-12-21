@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="415.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ReportViewController">
+   <children>
+      <TextField fx:id="textFieldYear" layoutX="549.0" layoutY="29.0" prefHeight="27.0" prefWidth="127.0" promptText="year" />
+      <Button fx:id="buttonGeneratePdfReport" layoutX="549.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#generatePDF" prefHeight="27.0" prefWidth="127.0" text="generate pdf report" />
+
+      <Button id="button1" fx:id="button1" layoutX="220.0" layoutY="29.0" onAction="#handleButtonMessagesReport" prefHeight="27.0" prefWidth="167.0" text="Load PieChart Messages" />
+      <Button id="button2" fx:id="button2" layoutX="25.0" layoutY="29.0" onAction="#handleButtonFriendsReport" prefHeight="27.0" prefWidth="180.0" text="Load PieChart Friends" />
+      <Button id="buttonclear" fx:id="buttonclear" layoutX="409.0" layoutY="358.0" onAction="#handleButtonClearAction" prefHeight="27.0" prefWidth="127.0" text="Clear PieChart" />
+      <PieChart fx:id="piechart" layoutX="25.0" layoutY="77.0" prefHeight="307.0" prefWidth="362.0" />
+      <TextField fx:id="textFieldMonth" layoutX="409.0" layoutY="29.0" prefHeight="27.0" prefWidth="127.0" promptText="month" />
+      <TableView fx:id="tableViewFriends" layoutX="409.0" layoutY="77.0" prefHeight="264.0" prefWidth="267.0">
+        <columns>
+          <TableColumn fx:id="tableColumnFirstName" prefWidth="135.0" text="First Name" />
+          <TableColumn fx:id="tableColumnLastName" prefWidth="131.0" text="Last name" />
+        </columns>
+      </TableView>
+
+
+
+   </children>
+</AnchorPane>

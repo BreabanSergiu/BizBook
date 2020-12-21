@@ -9,6 +9,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jdk.javadoc.internal.doclets.toolkit.MethodWriter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.springframework.util.ResourceUtils;
 import socialnetwork.config.ApplicationContext;
 import socialnetwork.controller.IntroductionController;
 import socialnetwork.domain.Friendship;
@@ -27,10 +30,12 @@ import socialnetwork.repository.file.*;
 import socialnetwork.service.*;
 import socialnetwork.utils.Constants;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.*;
 
 public class MainFX extends Application {
 
@@ -109,6 +114,10 @@ public class MainFX extends Application {
         friendshipRequestService = new FriendshipRequestService(friendshipRequestDbRepository,friendshipDbRepository);
 
         launch(args);
+
+
+
+
 ///--------------------reading data from databasex
 
 //        System.out.println(userDbRepository.findOne(1l));

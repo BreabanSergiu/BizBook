@@ -46,6 +46,9 @@ public class Message extends Entity<Long> {
     public User getFrom() {
         return from;
     }
+    public String getNameFrom(){
+        return getFromFirstName() + " " + getFrom().getLastName();
+    }
 
     public String getFromFirstName(){return from.getFirstName();}
     public String getFromLastName(){return from.getLastName();}
