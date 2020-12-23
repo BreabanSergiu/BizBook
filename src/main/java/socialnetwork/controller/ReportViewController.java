@@ -6,9 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import net.sf.jasperreports.engine.*;
@@ -25,10 +30,17 @@ import socialnetwork.utils.observer.Observable;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 
 public class ReportViewController {
 
@@ -37,18 +49,15 @@ public class ReportViewController {
     UserService userService;
     UserDTO selectedUserDTO;
 
+
     ObservableList<UserDTO> model = FXCollections.observableArrayList();
+    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
     @FXML
     Button buttonGeneratePdfReport;
+
     @FXML
     PieChart piechart;
-
-    @FXML
-    TextField textFieldMonth;
-
-    @FXML
-    TextField textFieldYear;
 
     @FXML
     TableView<UserDTO> tableViewFriends;
@@ -60,26 +69,66 @@ public class ReportViewController {
     TableColumn<UserDTO,String> tableColumnLastName;
 
     @FXML
+    DatePicker datePickerStartDate;
+
+    @FXML
+    DatePicker datePickerEndDate;
+
+    @FXML
+    Label labelProcent;
+
+
+
+
+    @FXML
     void initialize() {
         tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("firstName"));
         tableColumnLastName.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("lastName"));
+
         tableViewFriends.setItems(model);
-        ObservableList<PieChart.Data>pieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("January", 2 ),
-                        new PieChart.Data("February", 2),
-                        new PieChart.Data("March", 2),
-                        new PieChart.Data("April",2),
-                        new PieChart.Data("May",2),
-                        new PieChart.Data("June", 2),
-                        new PieChart.Data("July", 2),
-                        new PieChart.Data("August", 2),
-                        new PieChart.Data("September",2),
-                        new PieChart.Data("October", 2),
-                        new PieChart.Data("November", 2),
-                        new PieChart.Data("December", 2)
-                );
         piechart.setData(pieChartData);
+
+        labelProcent.setVisible(false);
+
+
+    }
+    public void populatePieChart(){
+        Iterable<Message> messageIterable = messageService.getAllMessagesToUser(selectedUserDTO.getId());
+        List<Message> messageList = new ArrayList<>();
+
+        messageIterable.forEach(messageList::add);
+        LocalDate dataStart = LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonth(),1);
+        LocalDate dataEnd = LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonth(),31);
+        List<Message> filtredMessageList = messageService.getMessagesBetweenDate(selectedUserDTO.getId(),
+                dataStart,dataEnd);
+
+
+        piechart.getData().clear();
+        PieChart.Data data1 = new PieChart.Data("last month", filtredMessageList.size() );
+        PieChart.Data data2 = new PieChart.Data("other months", messageList.size() - filtredMessageList.size() );
+        pieChartData.add(data1);
+        pieChartData.add(data2);
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+        for (PieChart.Data data :pieChartData){
+
+            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            Double procent = (data.getPieValue()*100)/messageList.size();
+                            labelProcent.setTranslateX(e.getSceneX()-15);
+                            labelProcent.setTranslateY(e.getSceneY()-15);
+                            labelProcent.setText(decimalFormat.format(procent) + "%");
+                            labelProcent.setVisible(true);
+
+
+                        }
+                    });
+
+        }
+        piechart.setTitle("Messages");
+
     }
 
     private void initModel(){
@@ -132,41 +181,27 @@ public class ReportViewController {
             JasperReport jasperReport  = JasperCompileManager.compileReport(file.getAbsolutePath());//compile de report
 
             UserDTO userDTO = tableViewFriends.getSelectionModel().getSelectedItem();
+
+            if(datePickerStartDate.getValue() == null || datePickerEndDate.getValue() == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR,"you must to introduce a date!");
+                alert.show();
+                return;
+            }
             List<Message> messageList = null;
             int nrMessage = 0;
             int nrFriends = 0;
-           if(userDTO!=null){
-               String month  = textFieldMonth.getText();
-               String year = textFieldYear.getText();
-               if(month.matches("[0-9]+" ) && Integer.parseInt(month) > 0 && Integer.parseInt(month) <=12){
-                   if(year.length() > 3 && year.matches("[0-9]+")){
-                       nrMessage = messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),Integer.parseInt(month),Integer.parseInt(year));
-                       nrFriends= friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),Integer.parseInt(month),Integer.parseInt(year));
-                       messageList = messageService.getAllMessageFromOneFriendInOneMonthAndYear(selectedUserDTO.getId(),userDTO.getId(),Integer.parseInt(textFieldMonth.getText()),Integer.parseInt(textFieldYear.getText()));
+            if(userDTO != null){
+                messageList = messageService.getAllMessageFromOneFriendBetweenDate(selectedUserDTO.getId(),userDTO.getId(),datePickerStartDate.getValue(),datePickerEndDate.getValue());
+                nrMessage = messageService.getMessagesBetweenDate(selectedUserDTO.getId(),datePickerStartDate.getValue(),datePickerEndDate.getValue()).size();
+                nrFriends = friendshipService.getFriendsBetweenDate(selectedUserDTO.getId(),datePickerStartDate.getValue(),datePickerEndDate.getValue()).size();
 
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR,"you must to select one user!");
+                alert.show();
+                return;
+            }
 
-                   }else
-                   {
-                       Alert alert = new Alert(Alert.AlertType.ERROR,"introduce a year between 1000 and 3000 ");
-                       alert.show();
-                       return;
-                   }
-               }
-               else
-               {
-                   Alert alert = new Alert(Alert.AlertType.ERROR,"introduce a valid month 1-12 ");
-                   alert.show();
-                   return;
-
-               }
-
-           }
-           else
-           {
-               Alert alert = new Alert(Alert.AlertType.ERROR,"Nothing selected");
-               alert.show();
-               return;
-           }
 
             if(messageList.size() == 0){
                 User user = userService.getUser(selectedUserDTO.getId());
@@ -177,19 +212,32 @@ public class ReportViewController {
 
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(messageList);///give collection from where we take the elements
             Map<String ,Object> parameters = new HashMap<>();
+            String dateFormat = datePickerStartDate.getValue().getYear()+"/"+datePickerStartDate.getValue().getMonthValue()+"/"+datePickerStartDate.getValue().getDayOfMonth()+" - "
+                    + datePickerEndDate.getValue().getYear()+"/"+datePickerEndDate.getValue().getMonthValue()+"/"+datePickerEndDate.getValue().getDayOfMonth();
             parameters.put("textFieldDescription",selectedUserDTO.getFirstName()+"_"+selectedUserDTO.getLastName()+"'s report");
-            parameters.put("textFieldNrMessage","Number of messages = "+nrMessage );
-            parameters.put("textFieldNrPrieteni","Number of new friends = "+nrFriends);
+            parameters.put("textFieldNrMessage","Between date "+dateFormat +" the number of messages is = "+nrMessage);
+            parameters.put("textFieldNrPrieteni","Between date "+ dateFormat +" the number of newly created friends is = "+nrFriends);
 
-            textFieldMonth.clear();
-            textFieldYear.clear();
+
             tableViewFriends.getSelectionModel().clearSelection();
             //create the report ,fill copiled report with data from datasource
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource);
             //export the report to dest
-            JasperExportManager.exportReportToPdfFile(jasperPrint,pathToGenerate+"/"+selectedUserDTO.getFirstName()+"_"+selectedUserDTO.getLastName()+".pdf");
+            String destinationFileName = pathToGenerate+"/"+selectedUserDTO.getFirstName()+"_"+selectedUserDTO.getLastName()+".pdf";
+            JasperExportManager.exportReportToPdfFile(jasperPrint,destinationFileName);
 
 
+            //open pdf file
+            if(Desktop.isDesktopSupported()){
+                try{
+
+                    File myFile = new File(destinationFileName);
+                    Desktop.getDesktop().open(myFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
         } catch (FileNotFoundException | JRException e) {
             e.printStackTrace();
         }
@@ -200,99 +248,113 @@ public class ReportViewController {
     @FXML
     private void handleButtonMessagesReport(ActionEvent event) {
 
-        String year = textFieldYear.getText();
-        ObservableList<PieChart.Data> pieChartData ;
-            if(year.length() > 3 && year.matches("[0-9]+")){
+        labelProcent.setVisible(false);
 
-                pieChartData =
-                        FXCollections.observableArrayList(
-                                new PieChart.Data("January", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),1,Integer.parseInt(year) )  ),
-                                new PieChart.Data("February", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),2,Integer.parseInt(year) )),
-                                new PieChart.Data("March", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),3,Integer.parseInt(year) )),
-                                new PieChart.Data("April", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),4,Integer.parseInt(year) )),
-                                new PieChart.Data("May", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),5,Integer.parseInt(year) )),
-                                new PieChart.Data("June", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),6,Integer.parseInt(year) )),
-                                new PieChart.Data("July", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),7,Integer.parseInt(year) )),
-                                new PieChart.Data("August", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),8,Integer.parseInt(year) )),
-                                new PieChart.Data("September", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),9,Integer.parseInt(year) )),
-                                new PieChart.Data("October", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),10,Integer.parseInt(year) )),
-                                new PieChart.Data("November", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),11,Integer.parseInt(year) )),
-                                new PieChart.Data("December", messageService.getNumberOfMessagesFromOneMonth(selectedUserDTO.getId(),12,Integer.parseInt(year) ))
-                        );
+        if(datePickerEndDate.getValue() == null || datePickerStartDate.getValue() ==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"please introduce the date!");
+            alert.show();
+            return;
+        }
 
-            }else
-            {
-                Alert alert = new Alert(Alert.AlertType.ERROR,"introduce a year between 1000 and 3000 ");
-                alert.show();
-                return;
-            }
+       Iterable<Message> messageIterable = messageService.getAllMessagesToUser(selectedUserDTO.getId());
+       List<Message> messageList = new ArrayList<>();
+
+       messageIterable.forEach(messageList::add);
+       List<Message> filtredMessageList = messageService.getMessagesBetweenDate(selectedUserDTO.getId(),
+               datePickerStartDate.getValue(),datePickerEndDate.getValue());
 
 
-        piechart.setTitle("Messages");
-        piechart.setData(pieChartData);
+       piechart.getData().clear();
+       PieChart.Data data1 = new PieChart.Data("picked date", filtredMessageList.size() );
+       PieChart.Data data2 = new PieChart.Data("other date", messageList.size() - filtredMessageList.size() );
+       pieChartData.add(data1);
+       pieChartData.add(data2);
 
-        textFieldYear.clear();
-        textFieldMonth.clear();
-        tableViewFriends.getSelectionModel().clearSelection();
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+        for (PieChart.Data data :pieChartData){
+
+            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            Double procent = (data.getPieValue()*100)/messageList.size();
+                            labelProcent.setTranslateX(e.getSceneX()-15);
+                            labelProcent.setTranslateY(e.getSceneY()-15);
+                            labelProcent.setText(decimalFormat.format(procent) + "%");
+                            labelProcent.setVisible(true);
+
+
+                        }
+                    });
+
+        }
+
+       piechart.setTitle("Messages");
+
 
     }
 
     @FXML
     private void handleButtonFriendsReport(ActionEvent event) {
-        String year = textFieldYear.getText();
-        ObservableList<PieChart.Data> pieChartData ;
-        if(year.length() > 3 && year.matches("[0-9]+")){
 
-            pieChartData =
-                    FXCollections.observableArrayList(
-                            new PieChart.Data("January", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),1,Integer.parseInt(year) )  ),
-                            new PieChart.Data("February", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),2,Integer.parseInt(year) )),
-                            new PieChart.Data("March", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),3,Integer.parseInt(year) )),
-                            new PieChart.Data("April", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),4,Integer.parseInt(year) )),
-                            new PieChart.Data("May",friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),5,Integer.parseInt(year) )),
-                            new PieChart.Data("June", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),6,Integer.parseInt(year) )),
-                            new PieChart.Data("July", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),7,Integer.parseInt(year) )),
-                            new PieChart.Data("August", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),8,Integer.parseInt(year) )),
-                            new PieChart.Data("September", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),9,Integer.parseInt(year) )),
-                            new PieChart.Data("October", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),10,Integer.parseInt(year) )),
-                            new PieChart.Data("November", friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),11,Integer.parseInt(year) )),
-                            new PieChart.Data("December",friendshipService.getNumberOfFriendsFromOneMounthAndYear(selectedUserDTO.getId(),12,Integer.parseInt(year) ))
-                    );
+        labelProcent.setVisible(false);
 
-        }else
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR,"introduce a year between 1000 and 3000 ");
+
+        if(datePickerEndDate.getValue() == null || datePickerStartDate.getValue() ==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"please introduce the date!");
             alert.show();
             return;
         }
 
+        List<Friendship> filtredFriendshipList = friendshipService.getFriendsBetweenDate(selectedUserDTO.getId(),
+                datePickerStartDate.getValue(),datePickerEndDate.getValue());
+
+        Iterable<Friendship> friendshipIterable = friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
+        List<Friendship> friendshipList = new ArrayList<>();
+        friendshipIterable.forEach(friendshipList::add);
+
+
+        piechart.getData().clear();
+
+        PieChart.Data data1 = new PieChart.Data("picked date", filtredFriendshipList.size() );
+        PieChart.Data data2 = new PieChart.Data("other date", friendshipList.size() - filtredFriendshipList.size() );
+        pieChartData.add(data1);
+        pieChartData.add(data2);
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+        for (PieChart.Data data :pieChartData){
+
+            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            Double procent = (data.getPieValue()*100)/friendshipList.size();
+                            labelProcent.setTranslateX(e.getSceneX()-15);
+                            labelProcent.setTranslateY(e.getSceneY()-15);
+                            labelProcent.setText(decimalFormat.format(procent) + "%");
+                            labelProcent.setVisible(true);
+
+
+                        }
+                    });
+
+        }
 
         piechart.setTitle("Friends");
-        piechart.setData(pieChartData);
 
-        textFieldYear.clear();
-        textFieldMonth.clear();
-        tableViewFriends.getSelectionModel().clearSelection();
+
     }
 
     @FXML
     private void handleButtonClearAction(ActionEvent event) {
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList();
+        labelProcent.setVisible(false);
+        piechart.getData().clear();
         piechart.setTitle("");
         piechart.setData(pieChartData);
     }
 
 
-//    public void hadlepp(MouseEvent mouseEvent) {
-//
-//        for (PieChart.Data data :piechart.getData()){
-//            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    JOptionPane.showMessageDialog(null,data.getPieValue());
-//                }
-//            });
-//        }
-//    }
+
+
+
 }

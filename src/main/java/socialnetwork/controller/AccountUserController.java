@@ -243,7 +243,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             AnchorPane root = loader.load();
 
             Stage reportViewStage = new Stage();
-            reportViewStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            reportViewStage.setScene(scene);
             reportViewStage.setTitle("Reports");;
             reportViewStage.show();
 
@@ -252,6 +253,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             reportViewController.setFriendshipService(friendshipService);
             reportViewController.setSelectedUserDTO(selectedUserDTO);
             reportViewController.setUserService(userService);
+            reportViewController.populatePieChart();
+
 
 
 
