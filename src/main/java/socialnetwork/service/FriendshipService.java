@@ -13,6 +13,7 @@ import socialnetwork.utils.events.FriendshipChangeEvent;
 import socialnetwork.utils.observer.Observable;
 import socialnetwork.utils.observer.Observer;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,17 +115,25 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
     }
 
 
-    public int getNumberOfFriendsFromOneMounthAndYear(Long id, Integer month, Integer year){
-        final int[] nr = {0};
-        Iterable<Friendship> friendships = repositoryFriendship.findAll();
+    public List<Friendship> getFriendsBetweenDate(Long id, LocalDate startDate,LocalDate endDate){
+
+        Iterable<Friendship> friendships = getAllFriendshipsUser(id);
+        List<Friendship> friendshipList = new ArrayList<>();
         friendships.forEach(friendship -> {
-            if(friendship.getDate().getMonthValue() == month && friendship.getDate().getYear() == year ){
-                if(friendship.getId().getRight() == id || friendship.getId().getLeft() ==id){
-                    nr[0] += 1;
+            if(friendship.getDate().getYear() >= startDate.getYear() && friendship.getDate().getYear() <= endDate.getYear()){
+                if(friendship.getDate().getMonthValue() >= startDate.getMonthValue() &&
+                        friendship.getDate().getMonthValue() <= endDate.getMonthValue()){
+                    if(friendship.getDate().getDayOfMonth() >= startDate.getDayOfMonth() &&
+                                friendship.getDate().getDayOfMonth() <= endDate.getDayOfMonth())
+                    {
+                        friendshipList.add(friendship);
+                    }
+
                 }
             }
+
         });
-        return nr[0];
+        return friendshipList;
     }
 
 

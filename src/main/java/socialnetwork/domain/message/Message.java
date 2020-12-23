@@ -79,6 +79,8 @@ public class Message extends Entity<Long> {
 
     public String getDateString(){ return date.format(Constants.DATE_TIME_FORMATTER);}
 
+    public String getlDateString(){ return date.toLocalDate().toString();}
+
     public void setDate(LocalDateTime date) {
         this.date = date;
     }

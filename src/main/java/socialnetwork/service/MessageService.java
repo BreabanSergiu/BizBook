@@ -6,6 +6,7 @@ import socialnetwork.domain.validators.ValidationException;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,33 +67,37 @@ public class MessageService {
     }
 
 
-    /**
-     *
-     * @param id the id of the user to whom count the messages from the given month and year
-     * @param month
-     * @param year
-     * @return the number of messages
-     */
-   public int getNumberOfMessagesFromOneMonth(Long id, Integer month,Integer year){
-       final int[] nr = {0};
-        Iterable<Message> messages = getAllMessagesToUser(id);
-        messages.forEach(message->{
-           if (message.getDate().getMonthValue() == month && message.getDate().getYear() == year )
-               nr[0] += 1;
 
-        });
-        return nr[0];
+   public List<Message> getMessagesBetweenDate(Long id, LocalDate startDate,LocalDate endDate){
+       List<Message> messageList = new ArrayList<>();
+
+       Iterable<Message> messageIterable = getAllMessagesToUser(id);
+       messageIterable.forEach(message -> {
+           if(message.getDate().getYear() >= startDate.getYear() && message.getDate().getYear() <= endDate.getYear() ){
+               if(message.getDate().getMonthValue() >= startDate.getMonthValue() && message.getDate().getMonthValue() <= endDate.getMonthValue()){
+                   if(message.getDate().getDayOfMonth() >= startDate.getDayOfMonth() && message.getDate().getDayOfMonth() <= endDate.getDayOfMonth()){
+                       messageList.add(message);
+                   }
+               }
+           }
+       });
+       return messageList;
 
    }
 
-   public List<Message> getAllMessageFromOneFriendInOneMonthAndYear(Long idUser, Long idFriend,Integer month,Integer year){
+   public List<Message> getAllMessageFromOneFriendBetweenDate(Long idUser, Long idFriend,LocalDate startDate,LocalDate endDate){
        List<Message> messageList = new ArrayList<>();
        Iterable<Message> messages = getAllMessagesToUser(idUser);
 
        for(Message message: messages){
-           if(message.getDate().getMonthValue() == month && message.getDate().getYear() == year){
-               if(message.getFrom().getId() == idFriend){
-                   messageList.add(message);
+
+           if(message.getDate().getYear() >= startDate.getYear() && message.getDate().getYear() <= endDate.getYear() ){
+               if(message.getDate().getMonthValue() >= startDate.getMonthValue() && message.getDate().getMonthValue() <= endDate.getMonthValue()){
+                   if(message.getDate().getDayOfMonth() >= startDate.getDayOfMonth() && message.getDate().getDayOfMonth() <= endDate.getDayOfMonth()){
+                       if(message.getFrom().getId() == idFriend){
+                           messageList.add(message);
+                       }
+                   }
                }
            }
        }
