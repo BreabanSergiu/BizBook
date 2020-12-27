@@ -28,6 +28,8 @@ public class FriendshipRequest extends Message {
 
     public String getFirstNameTo(){return getTo().get(0).getFirstName();}
 
+    public String getNameFrom(){ return getFirstNameFrom()+" "+getLastNameFrom();}
+
 
     @Override
     public String toString() {

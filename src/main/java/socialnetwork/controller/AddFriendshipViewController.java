@@ -121,6 +121,9 @@ public class AddFriendshipViewController {
                 alert.show();
             }
 
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR,"you must to select an user");
+            alert.show();
         }
 
     }

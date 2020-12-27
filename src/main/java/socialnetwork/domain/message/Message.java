@@ -53,6 +53,7 @@ public class Message extends Entity<Long> {
     public String getFromFirstName(){return from.getFirstName();}
     public String getFromLastName(){return from.getLastName();}
 
+
     public void setFrom(User from) {
         this.from = from;
     }
@@ -79,7 +80,7 @@ public class Message extends Entity<Long> {
 
     public String getDateString(){ return date.format(Constants.DATE_TIME_FORMATTER);}
 
-    public String getlDateString(){ return date.toLocalDate().toString();}
+    public String getLocalDateString(){ return date.toLocalDate().toString();}
 
     public void setDate(LocalDateTime date) {
         this.date = date;
