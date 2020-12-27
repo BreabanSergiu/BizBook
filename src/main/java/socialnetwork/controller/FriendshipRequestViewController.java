@@ -32,16 +32,7 @@ public class FriendshipRequestViewController implements Observer<FriendshipReque
     Stage frienshipRequestViewStage;
 
 
-    public void setFriendshipRequestService(FriendshipRequestService friendshipRequestService,UserDTO selectedUserDTO) {
-        this.friendshipRequestService = friendshipRequestService;
-        this.selectedUserDTO = selectedUserDTO;
-        friendshipRequestService.addObserver(this);
-        initModel();
-    }
 
-    public void setFriendshipService(FriendshipService friendshipService) {
-        this.friendshipService = friendshipService;
-    }
 
     @FXML
     TableView<FriendshipRequest> tableViewFriendshipRequest;
@@ -86,6 +77,17 @@ public class FriendshipRequestViewController implements Observer<FriendshipReque
         buttonUnsend.setVisible(false);
         tableViewFriendshipRequest.setItems(model);
 
+    }
+
+    public void setFriendshipRequestService(FriendshipRequestService friendshipRequestService,UserDTO selectedUserDTO) {
+        this.friendshipRequestService = friendshipRequestService;
+        this.selectedUserDTO = selectedUserDTO;
+        friendshipRequestService.addObserver(this);
+        initModel();
+    }
+
+    public void setFriendshipService(FriendshipService friendshipService) {
+        this.friendshipService = friendshipService;
     }
 
     public void initModel(){

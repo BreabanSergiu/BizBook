@@ -1,7 +1,7 @@
 
 
 .label {
-    -fx-font-size: 15px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #176473;
     -fx-font-family: "Arial Black";
@@ -9,20 +9,11 @@
 
 }
 
-#tableColumnYourFriends{
-    -fx-background-color: #92acbc;
 
-}
 
-#tableColumnFirstName{
-    -fx-background-color: #c1dae9;
 
-}
 
-#tableColumnLastName{
-    -fx-background-color: #c1dae9;
 
-}
 
 #buttonAddFriendship:hover{
     -fx-background-color: #a4efef;

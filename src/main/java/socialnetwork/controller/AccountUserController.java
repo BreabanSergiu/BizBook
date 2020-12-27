@@ -10,28 +10,30 @@ package socialnetwork.controller;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.Image;
-        import javafx.scene.input.MouseEvent;
         import javafx.scene.layout.AnchorPane;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
         import socialnetwork.domain.Friendship;
         import socialnetwork.domain.Tuple;
-        import socialnetwork.domain.User;
         import socialnetwork.domain.UserDTO;
+        import socialnetwork.domain.message.FriendshipRequest;
+        import socialnetwork.domain.message.Message;
         import socialnetwork.service.FriendshipRequestService;
         import socialnetwork.service.FriendshipService;
         import socialnetwork.service.MessageService;
         import socialnetwork.service.UserService;
         import socialnetwork.utils.events.FriendshipChangeEvent;
+        import socialnetwork.utils.events.FriendshipRequestChangeEvent;
         import socialnetwork.utils.observer.Observer;
 
         import java.io.IOException;
-        import java.security.SecureRandom;
         import java.util.ArrayList;
         import java.util.List;
 
-public class AccountUserController implements Observer<FriendshipChangeEvent> {
-    ObservableList<UserDTO> model = FXCollections.observableArrayList();
+public class AccountUserController implements Observer<FriendshipChangeEvent>{
+    ObservableList<UserDTO> modelFriends = FXCollections.observableArrayList();
+    ObservableList<Message> modelMessages = FXCollections.observableArrayList();
+    ObservableList<FriendshipRequest> modelRequests = FXCollections.observableArrayList();
     UserService userService;
     FriendshipService friendshipService;
     FriendshipRequestService friendshipRequestService;
@@ -47,21 +49,56 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
     Button buttonDeleteFriendship;
     @FXML
     Label labelUserName;
+
     @FXML
-    TableColumn<UserDTO, String> tableColumnFirstName;
+    TableView<UserDTO> tableViewFriends;
+
     @FXML
-    TableColumn<UserDTO, String> tableColumnLastName;
+    TableView<Message> tableViewMessages;
+
     @FXML
-    TableView<UserDTO> tableViewAccountUser;
+    TableView<FriendshipRequest> tableViewRequests;
+
+    @FXML
+    TableColumn<UserDTO, String> tableColumnFirstNameFriends;
+    @FXML
+    TableColumn<UserDTO, String> tableColumnLastNameFriends;
+
+    @FXML
+    TableColumn<Message,String> tableColumnFromMessages;
+    @FXML
+    TableColumn<Message,String> tableColumnMessageMessages;
+    @FXML
+    TableColumn<Message,String> tableColumnDataMessages;
+
+    @FXML
+    TableColumn<FriendshipRequest,String> tableColumnFromRequests;
+    @FXML
+    TableColumn<FriendshipRequest,String> tableColumnMessageRequests;
+    @FXML
+    TableColumn<FriendshipRequest,String> tableColumnDataRequests;
+
 
 
 
 
     @FXML
     void initialize() {
-        tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("firstName"));
-        tableColumnLastName.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("lastName"));
-        tableViewAccountUser.setItems(model);
+
+        tableColumnFirstNameFriends.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("firstName"));
+        tableColumnLastNameFriends.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("lastName"));
+
+        tableColumnFromMessages.setCellValueFactory(new PropertyValueFactory<Message,String>("NameFrom"));
+        tableColumnMessageMessages.setCellValueFactory(new PropertyValueFactory<Message,String>("Message"));
+        tableColumnDataMessages.setCellValueFactory(new PropertyValueFactory<Message,String>("LocalDateString"));
+
+        tableColumnFromRequests.setCellValueFactory(new PropertyValueFactory<FriendshipRequest,String>("NameFrom"));
+        tableColumnMessageRequests.setCellValueFactory(new PropertyValueFactory<FriendshipRequest,String>("Message"));
+        tableColumnDataRequests.setCellValueFactory(new PropertyValueFactory<FriendshipRequest,String>("LocalDateString"));
+
+        tableViewFriends.setItems(modelFriends);
+        tableViewMessages.setItems(modelMessages);
+        tableViewRequests.setItems(modelRequests);
     }
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
@@ -75,13 +112,43 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
         System.out.println(selectedUserDTO);
 
         friendshipService.addObserver(this);
+
         if (selectedUserDTO != null) {
             labelUserName.setText("Hello, " + selectedUserDTO.getFirstName()+" "+selectedUserDTO.getLastName());
-            initModel();
+            initModelFriends();
+            initModelMessages();
+            initModelRequests();
         }
     }
 
-    private void initModel(){
+    private void initModelRequests() {
+        Iterable<FriendshipRequest> friendshipRequests = this.friendshipRequestService.getAllPendingRequest(selectedUserDTO.getId());
+        List<FriendshipRequest> friendshipRequestList = new ArrayList<>();
+        friendshipRequests.forEach(friendshipRequestList::add);
+
+        if(!friendshipRequests.iterator().hasNext()){
+            modelRequests.setAll(friendshipRequestList);
+            tableViewRequests.setPlaceholder(new Label("you have no pending friendship request!"));
+        }
+        else{
+            modelRequests.setAll(friendshipRequestList);
+        }
+    }
+
+    private void initModelMessages() {
+        Iterable<Message> messages = this.messageService.getAllMessagesToUser(selectedUserDTO.getId());
+        List<Message> messageList = new ArrayList<>();
+        messages.forEach(messageList::add);
+        if(!messages.iterator().hasNext()){
+            modelMessages.setAll(messageList);
+            tableViewMessages.setPlaceholder(new Label("You have no messages received!"));
+        }
+        else{
+            modelMessages.setAll(messageList);
+        }
+    }
+
+    private void initModelFriends(){
         Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
         List<UserDTO> listFriends = new ArrayList();
         friendships.forEach(friendship -> {
@@ -96,16 +163,16 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             }
         });
         if (!friendships.iterator().hasNext()) {
-            model.setAll(listFriends);
-            tableViewAccountUser.setPlaceholder(new Label("You have no added friends"));
+            modelFriends.setAll(listFriends);
+            tableViewFriends.setPlaceholder(new Label("You have no added friends!"));
         } else {
-            model.setAll(listFriends);
+            modelFriends.setAll(listFriends);
         }
     }
 
 
     public void deleteFriendship(){
-        UserDTO userDTO = tableViewAccountUser.getSelectionModel().getSelectedItem();
+        UserDTO userDTO = tableViewFriends.getSelectionModel().getSelectedItem();
         if(userDTO != null){
             Long selectedUserID = selectedUserDTO.getId();
             Long userId = userDTO.getId();
@@ -118,7 +185,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
             if(friendship2 != null){
                 friendshipService.deleteFriendship(new Tuple<>(userId,selectedUserID));
             }
-            tableViewAccountUser.getSelectionModel().clearSelection();
+            tableViewFriends.getSelectionModel().clearSelection();
 
 
         }
@@ -194,7 +261,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent> {
 
     @Override
     public void update(FriendshipChangeEvent friendshipChangeEvent) {
-            initModel();
+            initModelFriends();
+            initModelRequests();
     }
 
     public void viewMessages() {
