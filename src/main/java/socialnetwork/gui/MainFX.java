@@ -15,6 +15,7 @@ import org.springframework.util.ResourceUtils;
 import socialnetwork.config.ApplicationContext;
 import socialnetwork.controller.IntroductionController;
 import socialnetwork.domain.Friendship;
+import socialnetwork.domain.Photo;
 import socialnetwork.domain.Tuple;
 import socialnetwork.domain.User;
 import socialnetwork.domain.message.FriendshipRequest;
@@ -22,10 +23,7 @@ import socialnetwork.domain.message.Message;
 import socialnetwork.domain.message.ReplyMessage;
 import socialnetwork.domain.validators.*;
 import socialnetwork.repository.Repository;
-import socialnetwork.repository.database.FriendshipDbRepository;
-import socialnetwork.repository.database.FriendshipRequestDbRepository;
-import socialnetwork.repository.database.MessageDbRepository;
-import socialnetwork.repository.database.UserDbRepository;
+import socialnetwork.repository.database.*;
 import socialnetwork.repository.file.*;
 import socialnetwork.service.*;
 import socialnetwork.utils.Constants;
@@ -44,6 +42,7 @@ public class MainFX extends Application {
     private static MessageService messageService ;
     private static ReplyMessageService replyMessageService;
     private static FriendshipRequestService friendshipRequestService ;
+    private static PhotoService photoService;
 
 
 
@@ -52,9 +51,8 @@ public class MainFX extends Application {
 
         initView(primaryStage);
         primaryStage.setTitle("Window");
-           primaryStage.setResizable(false);
-//        primaryStage.setWidth(521);
-//        primaryStage.setHeight(420);
+        primaryStage.setResizable(false);
+
         primaryStage.show();
 
     }
@@ -70,6 +68,7 @@ public class MainFX extends Application {
         introductionController.setFriendshipService(friendshipService);
         introductionController.setFriendshipRequestService(friendshipRequestService);
         introductionController.setMessageService(messageService);
+        introductionController.setPhotoService(photoService);
 
     }
 
@@ -83,7 +82,7 @@ public class MainFX extends Application {
         Repository<Tuple<Long,Long>,Friendship> friendshipDbRepository = new FriendshipDbRepository(url,username,pasword);
         Repository<Long,Message> messageDbRepository = new MessageDbRepository(url,username,pasword,  userDbRepository);
         Repository<Long,FriendshipRequest> friendshipRequestDbRepository = new FriendshipRequestDbRepository(url,username,pasword,userDbRepository);
-
+        Repository<Long, Photo> photoDbRepository = new PhotoDbRepository(url,username,pasword);
         //file
         String fileName= ApplicationContext.getPROPERTIES().getProperty("data.socialnetwork.users");
         Repository<Long, User> userFileRepository = new UserFile(fileName
@@ -107,13 +106,16 @@ public class MainFX extends Application {
         Repository<Long, FriendshipRequest> friendshipRequestFileRepository = new FriendshipRequestFile(fileNameFriednshipRequest
                 ,new FriendshipRequestValidator(),userFileRepository);
 
+
+
         userService = new UserService(userDbRepository,friendshipDbRepository);
         friendshipService = new FriendshipService(friendshipDbRepository,userDbRepository);
         messageService = new MessageService(messageDbRepository);
         replyMessageService = new ReplyMessageService(replyMessageFileRepository);
         friendshipRequestService = new FriendshipRequestService(friendshipRequestDbRepository,friendshipDbRepository);
+        photoService = new PhotoService(photoDbRepository);
 
-        launch(args);
+       launch(args);
 
 
 

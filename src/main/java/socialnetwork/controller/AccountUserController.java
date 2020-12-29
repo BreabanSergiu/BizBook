@@ -10,22 +10,29 @@ package socialnetwork.controller;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.Image;
+        import javafx.scene.image.ImageView;
+        import javafx.scene.input.MouseEvent;
         import javafx.scene.layout.AnchorPane;
+        import javafx.scene.paint.ImagePattern;
+        import javafx.scene.shape.Circle;
+        import javafx.stage.FileChooser;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
+        import javafx.util.Duration;
         import socialnetwork.domain.Friendship;
+        import socialnetwork.domain.Photo;
         import socialnetwork.domain.Tuple;
         import socialnetwork.domain.UserDTO;
         import socialnetwork.domain.message.FriendshipRequest;
         import socialnetwork.domain.message.Message;
-        import socialnetwork.service.FriendshipRequestService;
-        import socialnetwork.service.FriendshipService;
-        import socialnetwork.service.MessageService;
-        import socialnetwork.service.UserService;
+        import socialnetwork.service.*;
         import socialnetwork.utils.events.FriendshipChangeEvent;
         import socialnetwork.utils.events.FriendshipRequestChangeEvent;
         import socialnetwork.utils.observer.Observer;
 
+        import java.io.File;
+        import java.io.FileInputStream;
+        import java.io.FileNotFoundException;
         import java.io.IOException;
         import java.util.ArrayList;
         import java.util.List;
@@ -38,6 +45,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     FriendshipService friendshipService;
     FriendshipRequestService friendshipRequestService;
     MessageService messageService;
+    PhotoService photoService;
     UserDTO selectedUserDTO;
     Stage accountUserStage;
     Stage introductionStage;
@@ -79,6 +87,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     TableColumn<FriendshipRequest,String> tableColumnDataRequests;
 
 
+    @FXML
+    Circle myCircle;
 
 
 
@@ -99,16 +109,28 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         tableViewFriends.setItems(modelFriends);
         tableViewMessages.setItems(modelMessages);
         tableViewRequests.setItems(modelRequests);
+        setTooltipPhotoAccount();
+
+
+    }
+
+    private void setTooltipPhotoAccount() {
+        Tooltip tooltip =new Tooltip("press to change\n " +
+                "        photo");
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        Tooltip.install(myCircle,tooltip);
     }
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
-                       FriendshipRequestService friendshipRequestService, MessageService messageService) {
+                       FriendshipRequestService friendshipRequestService, MessageService messageService, PhotoService photoService) {
 
         this.friendshipRequestService = friendshipRequestService;
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.selectedUserDTO = selectedUserDTO;
         this.messageService = messageService;
+        this.photoService = photoService;
         System.out.println(selectedUserDTO);
 
         friendshipService.addObserver(this);
@@ -329,5 +351,74 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    /*
+    mothod that change the user's photo profile
+     */
+    public void changePhoto() {
+        FileInputStream fileInputStream = null;
+        String photoPath = getPhotoURL();
+        if(photoPath != null){
+            try {
+                fileInputStream = new FileInputStream(photoPath);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            myCircle.setFill(new ImagePattern(new Image( fileInputStream )));
+            Photo photo = new Photo(photoPath);
+            photo.setId(selectedUserDTO.getId());
+             photoService.changePhoto(photo);
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"you don t selected any photos ");
+            alert.show();
+        }
+
+
+
+
+    }
+
+    /*
+    method that opens up a FileChooser Dialog in order to select a photo
+     */
+    public String getPhotoURL(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("/Users/breabansergiugeorgica/desktop"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PNG Files","*.PNG"),
+                new FileChooser.ExtensionFilter("JPG FILE","*.JPG"),new FileChooser.ExtensionFilter("JPEG FILE","*.JPEG"));
+        fileChooser.setTitle("Choose Photo");
+
+        File file = fileChooser.showOpenDialog(accountUserStage);
+        if(file != null){
+            return file.toString();
+        }
+        return null;
+    }
+
+
+    public void setPhotoAccount(Long id) {
+        Photo photo = photoService.getPhoto(id);
+        if(photo != null){
+            String photoPath = photo.getURL();
+            FileInputStream fileInputStream =null;
+            if(photoPath != null){
+                try {
+                    fileInputStream = new FileInputStream(photoPath);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                myCircle.setFill(new ImagePattern(new Image( fileInputStream )));
+            }
+        }
+
+        else {
+          myCircle.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("photos/profile.png"))));
+        }
+
     }
 }
