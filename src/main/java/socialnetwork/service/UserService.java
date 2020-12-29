@@ -72,10 +72,19 @@ public class UserService {
         return repoUser.findAll();
     }
 
+    /**
+     *
+     * @param id of the user
+     * @return an user with specified id
+     */
     public User getUser(Long id){
         return repoUser.findOne(id);
     }
 
+    /**
+     *
+     * @return a list with userDTO
+     */
     public List<UserDTO> getAllUserDTO() {
         List<UserDTO> userDTOsList = new ArrayList<>();
         getAll().forEach(user -> {
@@ -86,6 +95,11 @@ public class UserService {
         return userDTOsList;
     }
 
+    /**
+     *
+     * @param userID id of the user you are looking for
+     * @return an userDTO
+     */
     public UserDTO getUserDTO(Long userID) {
         User user = getUser(userID);
         if (user == null) {

@@ -13,10 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import socialnetwork.domain.User;
 import socialnetwork.domain.UserDTO;
-import socialnetwork.service.FriendshipRequestService;
-import socialnetwork.service.FriendshipService;
-import socialnetwork.service.MessageService;
-import socialnetwork.service.UserService;
+import socialnetwork.service.*;
 
 import java.io.IOException;
 
@@ -27,6 +24,7 @@ public class IntroductionController {
     FriendshipRequestService friendshipRequestService;
     ObservableList<UserDTO> modelUserDTO = FXCollections.observableArrayList();
     MessageService messageService;
+    PhotoService photoService;
     UserDTO selectedUserDTO;
 
     @FXML
@@ -104,8 +102,9 @@ public class IntroductionController {
             Scene scene = new Scene(root);
             accountUserStage.setScene(scene);
             AccountUserController accountUserController = loader.getController();
-            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService);
+            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService,photoService);
             accountUserController.setStages(accountUserStage,introductionStage);
+            accountUserController.setPhotoAccount(selectedUserDTO.getId() );
 
             introductionStage.hide();
             accountUserStage.show();
@@ -123,4 +122,8 @@ public class IntroductionController {
     }
 
 
+    public void setPhotoService(PhotoService photoService) {
+        this.photoService = photoService;
+
+    }
 }
