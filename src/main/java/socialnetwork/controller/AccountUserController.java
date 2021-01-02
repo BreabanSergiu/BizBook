@@ -10,24 +10,20 @@ package socialnetwork.controller;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.Image;
-        import javafx.scene.image.ImageView;
-        import javafx.scene.input.MouseEvent;
         import javafx.scene.layout.AnchorPane;
+        import javafx.scene.layout.Pane;
         import javafx.scene.paint.ImagePattern;
         import javafx.scene.shape.Circle;
+        import javafx.scene.shape.Rectangle;
         import javafx.stage.FileChooser;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
         import javafx.util.Duration;
-        import socialnetwork.domain.Friendship;
-        import socialnetwork.domain.Photo;
-        import socialnetwork.domain.Tuple;
-        import socialnetwork.domain.UserDTO;
+        import socialnetwork.domain.*;
         import socialnetwork.domain.message.FriendshipRequest;
         import socialnetwork.domain.message.Message;
         import socialnetwork.service.*;
         import socialnetwork.utils.events.FriendshipChangeEvent;
-        import socialnetwork.utils.events.FriendshipRequestChangeEvent;
         import socialnetwork.utils.observer.Observer;
 
         import java.io.File;
@@ -36,6 +32,7 @@ package socialnetwork.controller;
         import java.io.IOException;
         import java.util.ArrayList;
         import java.util.List;
+        import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AccountUserController implements Observer<FriendshipChangeEvent>{
     ObservableList<UserDTO> modelFriends = FXCollections.observableArrayList();
@@ -46,9 +43,11 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     FriendshipRequestService friendshipRequestService;
     MessageService messageService;
     PhotoService photoService;
+    EventService eventService;
     UserDTO selectedUserDTO;
     Stage accountUserStage;
     Stage introductionStage;
+    private final Page pageEvents = new Page(1,1);
 
 
     @FXML
@@ -57,6 +56,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     Button buttonDeleteFriendship;
     @FXML
     Label labelUserName;
+    @FXML
+    Button buttonEvents;
 
     @FXML
     TableView<UserDTO> tableViewFriends;
@@ -86,9 +87,69 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     @FXML
     TableColumn<FriendshipRequest,String> tableColumnDataRequests;
 
-
     @FXML
     Circle myCircle;
+
+    @FXML
+    Pane paneAccount;
+    @FXML
+    Pane paneEvents;
+    @FXML
+    Pane paneDescription;
+    @FXML
+    Pane paneNameShowDetails;
+
+    @FXML
+    Label labelNotification;
+    @FXML
+    Label labelBack;
+
+    @FXML
+    Label labelNextPage;
+
+    @FXML
+    Label labelPreviousPage;
+
+    @FXML
+    Rectangle rectanglePhotoEvent;
+
+    @FXML
+    Label labelNameEvent;
+
+    @FXML
+    Label labelShowDescription;
+
+    @FXML
+    Label labelDescription;
+
+    @FXML
+    Label labelHideDescription;
+
+
+    @FXML
+    Label labelNrParticipants;
+
+    @FXML
+    Label labelDateEvent;
+
+    @FXML
+    TabPane tabPaneFriendsMessagesRequests;
+
+    @FXML
+    Tab tabFriends;
+
+    @FXML
+    Tab tabMessages;
+
+    @FXML
+    Tab tabFriendshipRequests;
+
+    @FXML
+    AnchorPane anchorPaneMessages;
+
+    @FXML
+    Button buttonInterestedNotInterested;
+
 
 
 
@@ -109,9 +170,63 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         tableViewFriends.setItems(modelFriends);
         tableViewMessages.setItems(modelMessages);
         tableViewRequests.setItems(modelRequests);
+
+        setTooltipPhotos();
+        setPaneVisible();
+
+
+    }
+
+    private void setPaneVisible() {
+        paneAccount.setVisible(true);
+        paneEvents.setVisible(false);
+        paneNameShowDetails.setVisible(true);
+        paneDescription.setVisible(false);
+
+    }
+
+    private void setTooltipPhotos() {
         setTooltipPhotoAccount();
+        setTooltipPhotoNotification();
+        setTooltipPhotoBack();
+        setTooltipPhotoNextPage();
+        setTooltipPhotoPreviousPage();
 
+    }
 
+    private void setTooltipLabelDescription(String string) {
+        Tooltip tooltip =new Tooltip(string);
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        labelDescription.setTooltip(tooltip);
+    }
+
+    private void setTooltipPhotoPreviousPage() {
+        Tooltip tooltip =new Tooltip("PreviousPage");
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        labelPreviousPage.setTooltip(tooltip);
+    }
+
+    private void setTooltipPhotoNextPage() {
+        Tooltip tooltip =new Tooltip("NextPage");
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        labelNextPage.setTooltip(tooltip);
+    }
+
+    private void setTooltipPhotoBack() {
+        Tooltip tooltip =new Tooltip("Back");
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        labelBack.setTooltip(tooltip);
+    }
+
+    private void setTooltipPhotoNotification() {
+        Tooltip tooltip =new Tooltip("Notifications");
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        labelNotification.setTooltip(tooltip);
     }
 
     private void setTooltipPhotoAccount() {
@@ -123,7 +238,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     }
 
     void setAttributes(FriendshipService friendshipService, UserService userService, UserDTO selectedUserDTO,
-                       FriendshipRequestService friendshipRequestService, MessageService messageService, PhotoService photoService) {
+                       FriendshipRequestService friendshipRequestService, MessageService messageService, PhotoService photoService, EventService eventService) {
 
         this.friendshipRequestService = friendshipRequestService;
         this.friendshipService = friendshipService;
@@ -131,6 +246,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         this.selectedUserDTO = selectedUserDTO;
         this.messageService = messageService;
         this.photoService = photoService;
+        this.eventService = eventService;
         System.out.println(selectedUserDTO);
 
         friendshipService.addObserver(this);
@@ -421,4 +537,137 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         }
 
     }
+
+    public void openPageEvents() {
+        initFirstEvent();
+        paneEvents.setVisible(true);
+        paneAccount.setVisible(false);
+
+    }
+
+    /**
+     * initialize first event
+     */
+    private void initFirstEvent() {
+        Iterable<Event> events = eventService.getAllEvents();
+        List<Event> eventList = new ArrayList<>();
+        events.forEach(eventList::add);
+        Event event = eventList.get(0);
+
+        setPhotoEvent(event.getId());
+
+        labelNameEvent.setText("Name Event: "+event.getName());
+        String description = "Description: "+event.getDescription();
+        labelDescription.setText(description);
+        setTooltipLabelDescription(description);
+        labelDateEvent.setText("Date: "+event.getDate().toString());
+        labelNrParticipants.setText("Number Of Participants: "+ event.getParticipants().size());
+
+
+    }
+
+    /**
+     * set event photo
+     * @param id id of event
+     */
+    private void setPhotoEvent(Long id) {
+        Photo photo = photoService.getPhoto(1l);
+        if(photo != null){
+            String photoPath = photo.getURL();
+            FileInputStream fileInputStream =null;
+            if(photoPath != null){
+                try {
+                    fileInputStream = new FileInputStream(photoPath);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                rectanglePhotoEvent.setFill(new ImagePattern(new Image( fileInputStream )));
+            }
+        }
+
+        else {
+            rectanglePhotoEvent.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("photos/profile.png"))));
+        }
+
+    }
+
+
+    public void backToAccountFromEvents() {
+        paneEvents.setVisible(false);
+        paneAccount.setVisible(true);
+    }
+
+    public void openDescriptionPane() {
+        paneDescription.setVisible(true);
+        paneNameShowDetails.setVisible(false);
+    }
+
+    public void closeDescriptionPane() {
+        paneDescription.setVisible(false);
+        paneNameShowDetails.setVisible(true);
+    }
+
+    public void joinOrLeaveEvent() {
+        Event event  = firstEvent();
+        AtomicBoolean ok = new AtomicBoolean(false);
+        List<User> listPart = event.getParticipants();
+        listPart.forEach(user1 -> {
+            if(user1.getId().equals(selectedUserDTO.getId())){
+                ok.set(true);
+            }
+        });
+        if(ok.get()){
+            buttonInterestedNotInterested.setText("interested");
+            listPart.remove(0);
+        }
+        else {
+            buttonInterestedNotInterested.setText("I am not interested");
+            listPart.add(userService.getUser(selectedUserDTO.getId()));
+        }
+        // TODO: 30/12/2020 de aici trebuie sa continui maine cu paginarea 
+    }
+
+    /**
+     * set button -> not interested if the user is in list of participants
+     *      *              otherwise set interested
+     * @param idSelectedUser id of the user selected
+     * @param idEvent id of the event
+     */
+    public void setButtonInterested(Long idSelectedUser ,Long idEvent) {
+        Iterable<Event> events = eventService.getAllEvents();
+        AtomicBoolean exist = new AtomicBoolean(false);
+        events.forEach(event -> {
+            if(event.getId().equals(idEvent)){
+                event.getParticipants().forEach(participant->{
+                        if(participant.getId().equals(idSelectedUser)){
+                            exist.set(true);
+                        }
+                });
+            }
+
+        });
+        if(exist.get()){
+            buttonInterestedNotInterested.setText("i am not interested");
+        }
+        else
+        {
+            buttonInterestedNotInterested.setText("interested");
+        }
+
+    }
+
+    /**
+     *
+     * @return first event
+     */
+    public Event firstEvent() {
+        Iterable<Event> events = eventService.getAllEvents();
+        List<Event> eventList = new ArrayList<>();
+        events.forEach(eventList::add);
+        return eventList.get(0);
+    }
+
+
 }

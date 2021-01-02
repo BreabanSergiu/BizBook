@@ -14,10 +14,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.util.ResourceUtils;
 import socialnetwork.config.ApplicationContext;
 import socialnetwork.controller.IntroductionController;
-import socialnetwork.domain.Friendship;
-import socialnetwork.domain.Photo;
-import socialnetwork.domain.Tuple;
-import socialnetwork.domain.User;
+import socialnetwork.domain.*;
 import socialnetwork.domain.message.FriendshipRequest;
 import socialnetwork.domain.message.Message;
 import socialnetwork.domain.message.ReplyMessage;
@@ -43,6 +40,7 @@ public class MainFX extends Application {
     private static ReplyMessageService replyMessageService;
     private static FriendshipRequestService friendshipRequestService ;
     private static PhotoService photoService;
+    private static EventService eventService;
 
 
 
@@ -69,6 +67,7 @@ public class MainFX extends Application {
         introductionController.setFriendshipRequestService(friendshipRequestService);
         introductionController.setMessageService(messageService);
         introductionController.setPhotoService(photoService);
+        introductionController.setEventService(eventService);
 
     }
 
@@ -83,6 +82,7 @@ public class MainFX extends Application {
         Repository<Long,Message> messageDbRepository = new MessageDbRepository(url,username,pasword,  userDbRepository);
         Repository<Long,FriendshipRequest> friendshipRequestDbRepository = new FriendshipRequestDbRepository(url,username,pasword,userDbRepository);
         Repository<Long, Photo> photoDbRepository = new PhotoDbRepository(url,username,pasword);
+        Repository<Long, Event> eventDbRepository = new EventDbRepository(url,username,pasword,userDbRepository);
         //file
         String fileName= ApplicationContext.getPROPERTIES().getProperty("data.socialnetwork.users");
         Repository<Long, User> userFileRepository = new UserFile(fileName
@@ -114,7 +114,7 @@ public class MainFX extends Application {
         replyMessageService = new ReplyMessageService(replyMessageFileRepository);
         friendshipRequestService = new FriendshipRequestService(friendshipRequestDbRepository,friendshipDbRepository);
         photoService = new PhotoService(photoDbRepository);
-
+        eventService = new EventService(eventDbRepository);
        launch(args);
 
 

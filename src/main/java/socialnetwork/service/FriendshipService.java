@@ -120,16 +120,8 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
         Iterable<Friendship> friendships = getAllFriendshipsUser(id);
         List<Friendship> friendshipList = new ArrayList<>();
         friendships.forEach(friendship -> {
-            if(friendship.getDate().getYear() >= startDate.getYear() && friendship.getDate().getYear() <= endDate.getYear()){
-                if(friendship.getDate().getMonthValue() >= startDate.getMonthValue() &&
-                        friendship.getDate().getMonthValue() <= endDate.getMonthValue()){
-                    if(friendship.getDate().getDayOfMonth() >= startDate.getDayOfMonth() &&
-                                friendship.getDate().getDayOfMonth() <= endDate.getDayOfMonth())
-                    {
+            if(friendship.getDate().compareTo(startDate)>=0 && friendship.getDate().compareTo(endDate)<=0){
                         friendshipList.add(friendship);
-                    }
-
-                }
             }
 
         });

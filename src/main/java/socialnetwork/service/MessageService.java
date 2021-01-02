@@ -73,12 +73,8 @@ public class MessageService {
 
        Iterable<Message> messageIterable = getAllMessagesToUser(id);
        messageIterable.forEach(message -> {
-           if(message.getDate().getYear() >= startDate.getYear() && message.getDate().getYear() <= endDate.getYear() ){
-               if(message.getDate().getMonthValue() >= startDate.getMonthValue() && message.getDate().getMonthValue() <= endDate.getMonthValue()){
-                   if(message.getDate().getDayOfMonth() >= startDate.getDayOfMonth() && message.getDate().getDayOfMonth() <= endDate.getDayOfMonth()){
-                       messageList.add(message);
-                   }
-               }
+           if(message.getDate().toLocalDate().compareTo(startDate) >= 0  && message.getDate().toLocalDate().compareTo(endDate)<=0){
+                messageList.add(message);
            }
        });
        return messageList;
@@ -91,15 +87,12 @@ public class MessageService {
 
        for(Message message: messages){
 
-           if(message.getDate().getYear() >= startDate.getYear() && message.getDate().getYear() <= endDate.getYear() ){
-               if(message.getDate().getMonthValue() >= startDate.getMonthValue() && message.getDate().getMonthValue() <= endDate.getMonthValue()){
-                   if(message.getDate().getDayOfMonth() >= startDate.getDayOfMonth() && message.getDate().getDayOfMonth() <= endDate.getDayOfMonth()){
-                       if(message.getFrom().getId() == idFriend){
-                           messageList.add(message);
-                       }
-                   }
+           if(message.getDate().toLocalDate().compareTo(startDate) >= 0  && message.getDate().toLocalDate().compareTo(endDate)<=0){
+               if(message.getFrom().getId().equals(idFriend)){
+                   messageList.add(message);
                }
            }
+
        }
        return messageList;
    }

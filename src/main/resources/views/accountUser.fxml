@@ -9,64 +9,64 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="1018.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/acountUser.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.AccountUserController">
+<AnchorPane prefHeight="455.0" prefWidth="1029.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/acountUser.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.AccountUserController">
     <children>
-        <Label fx:id="labelUserName" alignment="CENTER" layoutX="32.0" layoutY="321.0" prefHeight="46.0" prefWidth="354.0" text="NameUser">
+        <Label fx:id="labelUserName" alignment="CENTER" layoutX="16.0" layoutY="322.0" prefHeight="46.0" prefWidth="354.0" text="NameUser">
             <font>
                 <Font size="22.0" />
             </font></Label>
-      <Circle fx:id="myCircle" fill="DODGERBLUE" layoutX="209.0" layoutY="209.0" onMouseClicked="#changePhoto" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
-      <Label layoutX="93.0" layoutY="23.0" />
-      <Pane layoutX="395.0" layoutY="3.0" prefHeight="444.0" prefWidth="623.0">
+      <Circle fx:id="myCircle" fill="DODGERBLUE" layoutX="193.0" layoutY="210.0" onMouseClicked="#changePhoto" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+      <Pane fx:id="paneAccount" layoutX="391.0" prefHeight="456.0" prefWidth="640.0" visible="false">
          <children>
-            <Button fx:id="buttonReports" layoutX="439.0" layoutY="125.0" mnemonicParsing="false" onMouseClicked="#showReports" prefHeight="46.0" prefWidth="158.0" text="reports" />
+            <Button fx:id="buttonReports" layoutX="455.0" layoutY="137.0" mnemonicParsing="false" onMouseClicked="#showReports" prefHeight="46.0" prefWidth="158.0" text="reports" />
       
-            <Button fx:id="buttonFriendshipRequest" layoutX="439.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#viewFriendshipRequest" prefHeight="46.0" prefWidth="158.0" text="View Friendship Request" />
-              <Button fx:id="buttonDeleteFriendship" layoutX="439.0" layoutY="230.0" mnemonicParsing="false" onMouseClicked="#deleteFriendship" prefHeight="46.0" prefWidth="158.0" text="Delete friendship" />
-              <Button fx:id="buttonAddFriendship" layoutX="439.0" layoutY="286.0" mnemonicParsing="false" onMouseClicked="#addFriendshipRequest" prefHeight="46.0" prefWidth="158.0" text="Add friendship Request" />
-            <Button fx:id="butonMessages" layoutX="439.0" layoutY="345.0" mnemonicParsing="false" onMouseClicked="#viewMessages" prefHeight="46.0" prefWidth="158.0" text="Messages" />
-            <TabPane layoutX="12.0" layoutY="92.0" prefHeight="321.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
+            <Button fx:id="buttonFriendshipRequest" layoutX="455.0" layoutY="379.0" mnemonicParsing="false" onMouseClicked="#viewFriendshipRequest" prefHeight="46.0" prefWidth="158.0" text="View  requests" />
+              <Button fx:id="buttonDeleteFriendship" layoutX="455.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#deleteFriendship" prefHeight="46.0" prefWidth="158.0" text="Delete friendship" />
+              <Button fx:id="buttonAddFriendship" layoutX="455.0" layoutY="318.0" mnemonicParsing="false" onMouseClicked="#addFriendshipRequest" prefHeight="46.0" prefWidth="158.0" text="Add request" />
+            <Button fx:id="butonMessages" layoutX="455.0" layoutY="197.0" mnemonicParsing="false" onMouseClicked="#viewMessages" prefHeight="46.0" prefWidth="158.0" text="Messages" />
+            <TabPane fx:id="tabPaneFriendsMessagesRequests" layoutX="27.0" layoutY="43.0" prefHeight="336.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Friends">
+                <Tab fx:id="tabFriends" text="             Friends            ">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane fx:id="acFriends" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                                <TableView fx:id="tableViewFriends" prefHeight="279.0" prefWidth="400.0">
+                                <TableView fx:id="tableViewFriends" prefHeight="304.0" prefWidth="400.0">
                                     <columns>
-                                          <TableColumn fx:id="tableColumnFirstNameFriends" prefWidth="205.0" text="First name" />
-                                          <TableColumn fx:id="tableColumnLastNameFriends" prefWidth="204.0" text="Last name" />
+                                          <TableColumn fx:id="tableColumnFirstNameFriends" prefWidth="199.0" text="First name" />
+                                          <TableColumn fx:id="tableColumnLastNameFriends" prefWidth="199.0" text="Last name" />
                                     </columns>
                                 </TableView>
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Messages">
+                <Tab fx:id="tabMessages" text="            Messages          ">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane fx:id="anchorPaneMessages" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)">
                            <children>
-                              <TableView fx:id="tableViewMessages" prefHeight="256.0" prefWidth="412.0">
+                              <TableView fx:id="tableViewMessages" prefHeight="304.0" prefWidth="400.0">
                                 <columns>
                                   <TableColumn fx:id="tableColumnFromMessages" prefWidth="100.0" text="From" />
-                                  <TableColumn fx:id="tableColumnMessageMessages" prefWidth="212.0" text="Message" />
-                                    <TableColumn fx:id="tableColumnDataMessages" prefWidth="100.0" text="Sent Data" />
+                                  <TableColumn fx:id="tableColumnMessageMessages" prefWidth="175.0" text="Message" />
+                                    <TableColumn fx:id="tableColumnDataMessages" prefWidth="123.0" text="Sent Data" />
                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Friendship Requests">
+                  <Tab fx:id="tabFriendshipRequests" text="Friendship Requests">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="tableViewRequests" prefHeight="255.0" prefWidth="412.0">
+                              <TableView fx:id="tableViewRequests" prefHeight="304.0" prefWidth="400.0">
                                 <columns>
                                   <TableColumn fx:id="tableColumnFromRequests" prefWidth="100.0" text="From" />
-                                  <TableColumn fx:id="tableColumnMessageRequests" prefWidth="212.0" text="Message" />
-                                    <TableColumn fx:id="tableColumnDataRequests" prefWidth="100.0" text="Sent Data" />
+                                  <TableColumn fx:id="tableColumnMessageRequests" prefWidth="174.0" text="Message" />
+                                    <TableColumn fx:id="tableColumnDataRequests" prefWidth="124.0" text="Sent Data" />
                                 </columns>
                               </TableView>
                            </children>
@@ -75,9 +75,36 @@
                   </Tab>
               </tabs>
             </TabPane>
+            <Button fx:id="buttonEvents" layoutX="455.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#openPageEvents" prefHeight="46.0" prefWidth="158.0" text="events" />
+            <Label fx:id="labelPreviousPage" layoutX="189.0" layoutY="391.0" prefHeight="27.0" prefWidth="28.0" />
+            <Label fx:id="labelNextPage" layoutX="237.0" layoutY="391.0" prefHeight="27.0" prefWidth="28.0" />
          </children>
       </Pane>
-      <Pane layoutX="395.0" layoutY="3.0" prefHeight="444.0" prefWidth="623.0" visible="false" />
+      <Pane fx:id="paneEvents" layoutX="391.0" prefHeight="456.0" prefWidth="640.0">
+         <children>
+            <Label fx:id="labelNotification" layoutX="569.0" layoutY="20.0" prefHeight="32.0" prefWidth="28.0" />
+            <Label fx:id="labelBack" layoutX="31.0" layoutY="20.0" onMouseClicked="#backToAccountFromEvents" prefHeight="24.0" prefWidth="45.0" />
+            <Rectangle fx:id="rectanglePhotoEvent" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="256.0" layoutX="125.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" width="391.0" />
+            <Pane fx:id="paneNameShowDetails" layoutX="125.0" layoutY="334.0" prefHeight="106.0" prefWidth="391.0">
+               <children>
+                  <Label fx:id="labelShowDescription" onMouseClicked="#openDescriptionPane" prefHeight="25.0" prefWidth="391.0" text="show details" />
+               </children>
+            </Pane>
+            <Pane fx:id="paneDescription" layoutX="125.0" layoutY="333.0" prefHeight="106.0" prefWidth="391.0" visible="false">
+               <children>
+                  <Label fx:id="labelDescription" layoutY="26.0" prefHeight="26.0" prefWidth="391.0" />
+                  <Label fx:id="labelHideDescription" onMouseClicked="#closeDescriptionPane" prefHeight="25.0" prefWidth="391.0" text="hide details" />
+                  <Label fx:id="labelNrParticipants" layoutY="52.0" prefHeight="26.0" prefWidth="391.0" />
+                  <Label fx:id="labelDateEvent" layoutY="78.0" prefHeight="25.0" prefWidth="391.0" />
+               </children>
+            </Pane>
+            <Label fx:id="labelNameEvent" layoutX="125.0" layoutY="308.0" prefHeight="25.0" prefWidth="391.0" />
+            <Button fx:id="buttonInterestedNotInterested" layoutX="125.0" layoutY="18.0" mnemonicParsing="false" onMouseClicked="#joinOrLeaveEvent" prefHeight="24.0" prefWidth="187.0" text="Button" />
+            <Button fx:id="buttonCreateEvent" layoutX="329.0" layoutY="18.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="187.0" text="Button" />
+            <Label fx:id="labelPreviousPageEvent" layoutX="39.0" layoutY="211.0" prefHeight="24.0" prefWidth="34.0" />
+            <Label fx:id="labelNextPageEvent" layoutX="559.0" layoutY="216.0" prefHeight="24.0" prefWidth="45.0" />
+         </children>
+      </Pane>
 
     </children>
 </AnchorPane>
