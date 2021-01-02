@@ -1,56 +1,74 @@
 
-
 .label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #176473;
+    -fx-text-fill: white;
     -fx-font-family: "Arial Black";
     -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
 
 }
 
-
-
-
-
+/*.table-view{*/
+/*    -fx-border-color: transparent;*/
+/*}*/
 
 #buttonAddFriendship:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #455760;
 }
 #buttonAddFriendship{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #5b7280;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
 }
 
 #buttonDeleteFriendship:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #455760;
 }
 #buttonDeleteFriendship{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #5b7280;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
 
 }
 
 #buttonFriendshipRequest:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #455760;
 }
 #buttonFriendshipRequest{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #5b7280;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
 }
 
 #butonMessages:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #455760;
 
 }
 #butonMessages{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #5b7280;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
 
 }
 
 #buttonReports:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #455760;
 }
 
 #buttonReports{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #5b7280;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+}
+
+#buttonEvents:hover{
+    -fx-background-color: #455760;
+}
+
+#buttonEvents{
+    -fx-background-color: #5b7280;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
 }
 
 
@@ -59,8 +77,39 @@
 
 }
 
+/*
+set image on labels
+ */
+#labelNotification{
+    -fx-background-image: url("bell.png");
+    -fx-background-repeat: no-repeat;
 
+}
 
+#labelBack{
+    -fx-background-image: url("back.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelNextPage{
+    -fx-background-image: url("forwardd.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelPreviousPage{
+    -fx-background-image: url("back.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelNextPageEvent{
+    -fx-background-image: url("nextPageEvent.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelPreviousPageEvent{
+    -fx-background-image: url("previousPageEvent.png");
+    -fx-background-repeat: no-repeat;
+}
 
 #labelUserName{
     -fx-font-size: 26px;
@@ -73,4 +122,169 @@
     -fx-border-radius: 10;
     -fx-text-fill: #8ad4e2;;
 }
+
+#paneAccount{
+    -fx-background-color: #536976;
+    -fx-background-radius: 10 0 0 10;
+    -fx-border-radius: 10 0 0 10;
+
+}
+
+#paneEvents{
+    -fx-background-color: #536976;
+    -fx-background-radius: 10 0 0 10;
+    -fx-border-radius: 10 0 0 10;
+}
+
+
+#labelNameEvent{
+    -fx-background-color: #94b6ca;
+    -fx-background-radius: 7 7 0 0;
+    -fx-border-radius: 7 7 0 0;
+    -fx-alignment: center;
+}
+
+
+#labelShowDescription{
+    -fx-background-color: #94b6ca;
+    -fx-background-radius:0 0 7 7 ;
+    -fx-border-radius: 0 0 7 7 ;
+    -fx-alignment: center;
+}
+
+#labelHideDescription{
+    -fx-background-radius: 7 7 0 0;
+    -fx-border-radius: 7 7 0 0;
+    -fx-background-color: #94b6ca;
+    -fx-alignment: center;
+}
+
+#labelDescription{
+    -fx-background-color: #94b6ca;
+    -fx-alignment: center;
+}
+
+
+#labelNrParticipants{
+    -fx-background-color: #94b6ca;
+    -fx-alignment: center;
+}
+
+#labelDateEvent{
+    -fx-background-color: #94b6ca;
+    -fx-alignment: center;
+    -fx-background-radius:0 0 7 7 ;
+    -fx-border-radius: 0 0 7 7 ;
+}
+
+#tabPaneFriendsMessagesRequests .tab-header-area .tab-header-background{
+    -fx-background-color: #536976;
+}
+
+#tabFriends{
+    -fx-background-color: #5b7280;
+    -fx-border-color:#536976;
+
+}
+
+#tabFriends:hover{
+    -fx-background-color: #455760;
+
+}
+
+#tabMessages{
+    -fx-background-color: #5b7280;
+    -fx-border-color:#536976;
+
+}
+
+#tabMessages:hover{
+    -fx-background-color: #455760;
+
+}
+
+#tabFriendshipRequests{
+    -fx-background-color: #5b7280;
+    -fx-border-color:#536976;
+
+}
+
+#tabFriendshipRequests:hover{
+    -fx-background-color: #455760;
+
+}
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: #39484f;
+}
+
+/*
+set text fill collor on tab
+ */
+.tab-label{
+    -fx-text-fill: white;
+}
+
+/*
+set background color on column
+ */
+#tableColumnFirstNameFriends{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;
+}
+
+#tableColumnLastNameFriends{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;
+}
+
+
+#tableColumnDataMessages{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;
+}
+
+#tableColumnFromMessages{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableColumnMessageMessages{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableColumnFromRequests{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableColumnMessageRequests{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableColumnDataRequests{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableViewFriends{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableViewMessages{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+#tableViewRequests{
+    -fx-background-color: linear-gradient(#536976, #4a606b);
+    -fx-text-fill: white;}
+
+
+/*
+set text fill when selected on cell
+ */
+.table-cell:filled{
+    -fx-text-fill: black;
+}
+
+
+
+
+
 

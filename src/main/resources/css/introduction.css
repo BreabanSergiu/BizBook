@@ -41,7 +41,7 @@
 }
 
 #textFieldUsername{
-    -fx-background-image: url('emailPH.jpg');
+    -fx-background-image: url('email.png');
     -fx-background-position: 93%;
     -fx-background-repeat: no-repeat;
     -fx-background-radius: 10;

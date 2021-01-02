@@ -25,6 +25,7 @@ public class IntroductionController {
     ObservableList<UserDTO> modelUserDTO = FXCollections.observableArrayList();
     MessageService messageService;
     PhotoService photoService;
+    EventService eventService;
     UserDTO selectedUserDTO;
 
     @FXML
@@ -102,9 +103,11 @@ public class IntroductionController {
             Scene scene = new Scene(root);
             accountUserStage.setScene(scene);
             AccountUserController accountUserController = loader.getController();
-            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService,photoService);
+            accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService,photoService,eventService);
             accountUserController.setStages(accountUserStage,introductionStage);
             accountUserController.setPhotoAccount(selectedUserDTO.getId() );
+
+            accountUserController.setButtonInterested(selectedUserDTO.getId(),accountUserController.firstEvent().getId());
 
             introductionStage.hide();
             accountUserStage.show();
@@ -125,5 +128,9 @@ public class IntroductionController {
     public void setPhotoService(PhotoService photoService) {
         this.photoService = photoService;
 
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }
