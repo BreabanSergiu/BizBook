@@ -2,6 +2,7 @@
 
 package socialnetwork.controller;
 
+        import javafx.beans.property.SimpleStringProperty;
         import javafx.collections.FXCollections;
         import javafx.collections.ObservableList;
         import javafx.fxml.FXML;
@@ -10,6 +11,8 @@ package socialnetwork.controller;
         import javafx.scene.control.*;
         import javafx.scene.control.cell.PropertyValueFactory;
         import javafx.scene.image.Image;
+        import javafx.scene.image.ImageView;
+        import javafx.scene.input.MouseEvent;
         import javafx.scene.layout.AnchorPane;
         import javafx.scene.layout.Pane;
         import javafx.scene.paint.ImagePattern;
@@ -18,7 +21,9 @@ package socialnetwork.controller;
         import javafx.stage.FileChooser;
         import javafx.stage.Modality;
         import javafx.stage.Stage;
+        import javafx.util.Callback;
         import javafx.util.Duration;
+        import org.graalvm.compiler.lir.LIRInstruction;
         import socialnetwork.domain.*;
         import socialnetwork.domain.message.FriendshipRequest;
         import socialnetwork.domain.message.Message;
@@ -30,14 +35,18 @@ package socialnetwork.controller;
         import java.io.FileInputStream;
         import java.io.FileNotFoundException;
         import java.io.IOException;
+        import java.time.LocalDate;
+        import java.time.temporal.ChronoUnit;
         import java.util.ArrayList;
         import java.util.List;
         import java.util.concurrent.atomic.AtomicBoolean;
+        import java.util.concurrent.atomic.AtomicInteger;
 
 public class AccountUserController implements Observer<FriendshipChangeEvent>{
     ObservableList<UserDTO> modelFriends = FXCollections.observableArrayList();
     ObservableList<Message> modelMessages = FXCollections.observableArrayList();
     ObservableList<FriendshipRequest> modelRequests = FXCollections.observableArrayList();
+    ObservableList<Event> modelNotification = FXCollections.observableArrayList();
     UserService userService;
     FriendshipService friendshipService;
     FriendshipRequestService friendshipRequestService;
@@ -47,6 +56,8 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     UserDTO selectedUserDTO;
     Stage accountUserStage;
     Stage introductionStage;
+    Event currentEvent;
+    private String pathPhotoCreateEvent;
     private final Page pageEvents = new Page(1,1);
 
 
@@ -55,9 +66,17 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     @FXML
     Button buttonDeleteFriendship;
     @FXML
-    Label labelUserName;
-    @FXML
     Button buttonEvents;
+    @FXML
+    Button buttonInterestedNotInterested;
+    @FXML
+    Button buttonDisable;
+    @FXML
+    Button buttonCreateEvent;
+    @FXML
+    Button buttonPostsEvent;
+    @FXML
+    Button buttonDiscard;
 
     @FXML
     TableView<UserDTO> tableViewFriends;
@@ -67,6 +86,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
 
     @FXML
     TableView<FriendshipRequest> tableViewRequests;
+
+    @FXML
+    TableView<Event> tableViewNotification;
 
     @FXML
     TableColumn<UserDTO, String> tableColumnFirstNameFriends;
@@ -88,6 +110,10 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     TableColumn<FriendshipRequest,String> tableColumnDataRequests;
 
     @FXML
+    TableColumn<Event,String> tableColumnNotification;
+
+
+    @FXML
     Circle myCircle;
 
     @FXML
@@ -98,49 +124,48 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     Pane paneDescription;
     @FXML
     Pane paneNameShowDetails;
+    @FXML
+    Pane paneEventPhotoAndLabels;
+    @FXML
+    Pane paneEventCreateEvent;
+    @FXML
+    Pane paneNotification;
+
 
     @FXML
     Label labelNotification;
     @FXML
     Label labelBack;
-
     @FXML
     Label labelNextPage;
-
     @FXML
     Label labelPreviousPage;
-
-    @FXML
-    Rectangle rectanglePhotoEvent;
-
     @FXML
     Label labelNameEvent;
-
     @FXML
     Label labelShowDescription;
-
     @FXML
     Label labelDescription;
-
     @FXML
     Label labelHideDescription;
-
-
+    @FXML
+    Label labelPreviousPageEvent;
+    @FXML
+    Label labelNextPageEvent;
     @FXML
     Label labelNrParticipants;
-
     @FXML
     Label labelDateEvent;
+    @FXML
+    Label labelUserName;
 
     @FXML
     TabPane tabPaneFriendsMessagesRequests;
 
     @FXML
     Tab tabFriends;
-
     @FXML
     Tab tabMessages;
-
     @FXML
     Tab tabFriendshipRequests;
 
@@ -148,8 +173,17 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     AnchorPane anchorPaneMessages;
 
     @FXML
-    Button buttonInterestedNotInterested;
+    Rectangle rectanglePhotoEvent;
+    @FXML
+    Rectangle rectanglePhotoCreateEvent;
 
+    @FXML
+    TextField textFieldNameEventCreateEvent;
+    @FXML
+    TextField textFieldDescriptionCreateEvent;
+
+    @FXML
+    DatePicker datePickerDateEvent;
 
 
 
@@ -167,21 +201,33 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         tableColumnMessageRequests.setCellValueFactory(new PropertyValueFactory<FriendshipRequest,String>("Message"));
         tableColumnDataRequests.setCellValueFactory(new PropertyValueFactory<FriendshipRequest,String>("LocalDateString"));
 
+        tableColumnNotification.setCellValueFactory(new PropertyValueFactory<Event,String>("NotificationString"));
+
+
+
         tableViewFriends.setItems(modelFriends);
         tableViewMessages.setItems(modelMessages);
         tableViewRequests.setItems(modelRequests);
+        tableViewNotification.setItems(modelNotification);
 
         setTooltipPhotos();
         setPaneVisible();
 
 
+
     }
+
 
     private void setPaneVisible() {
         paneAccount.setVisible(true);
         paneEvents.setVisible(false);
         paneNameShowDetails.setVisible(true);
         paneDescription.setVisible(false);
+        paneEventCreateEvent.setVisible(false);
+        paneEventPhotoAndLabels.setVisible(true);
+        paneNotification.setVisible(false);
+        paneEventCreateEvent.setVisible(false);
+
 
     }
 
@@ -191,7 +237,16 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         setTooltipPhotoBack();
         setTooltipPhotoNextPage();
         setTooltipPhotoPreviousPage();
+        setTooltipPhotoCreateEvent();
 
+    }
+
+    private void setTooltipPhotoCreateEvent() {
+        Tooltip tooltip =new Tooltip("press to add\n " +
+                "  new photo");;
+        tooltip.setShowDelay(new Duration(10));
+        tooltip.setHideDelay(new Duration(10));
+        Tooltip.install(rectanglePhotoCreateEvent,tooltip);
     }
 
     private void setTooltipLabelDescription(String string) {
@@ -492,9 +547,6 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
             alert.show();
         }
 
-
-
-
     }
 
     /*
@@ -549,12 +601,13 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
      * initialize first event
      */
     private void initFirstEvent() {
-        Iterable<Event> events = eventService.getAllEvents();
+        Iterable<Event> events = eventService.getAllEvents(pageEvents);
         List<Event> eventList = new ArrayList<>();
         events.forEach(eventList::add);
         Event event = eventList.get(0);
+        currentEvent = event;
 
-        setPhotoEvent(event.getId());
+        setPhotoEvent(event.getPhoto(),rectanglePhotoEvent);
 
         labelNameEvent.setText("Name Event: "+event.getName());
         String description = "Description: "+event.getDescription();
@@ -567,11 +620,26 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     }
 
     /**
-     * set event photo
-     * @param id id of event
+     *Method that initialize one event
+     * @param event Event that will initialized
      */
-    private void setPhotoEvent(Long id) {
-        Photo photo = photoService.getPhoto(1l);
+    private void initEvent(Event event){
+
+        setPhotoEvent(event.getPhoto(),rectanglePhotoEvent);
+        labelNameEvent.setText("Name Event: "+event.getName());
+        String description = "Description: "+event.getDescription();
+        labelDescription.setText(description);
+        setTooltipLabelDescription(description);
+        labelDateEvent.setText("Date: "+event.getDate().toString());
+        labelNrParticipants.setText("Number Of Participants: "+ event.getParticipants().size());
+    }
+
+    /**
+     * Method that set the event photo
+     * @param photo photo that will be set on event photo
+     */
+    private void setPhotoEvent(Photo photo,Rectangle rectangle) {
+
         if(photo != null){
             String photoPath = photo.getURL();
             FileInputStream fileInputStream =null;
@@ -583,15 +651,17 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
                     e.printStackTrace();
                 }
 
-                rectanglePhotoEvent.setFill(new ImagePattern(new Image( fileInputStream )));
+                rectangle.setFill(new ImagePattern(new Image( fileInputStream )));
             }
         }
 
         else {
-            rectanglePhotoEvent.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("photos/profile.png"))));
+            rectangle.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("photos/profile.png"))));
         }
 
     }
+
+
 
 
     public void backToAccountFromEvents() {
@@ -609,10 +679,14 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         paneNameShowDetails.setVisible(true);
     }
 
+
+    /**
+     * method that registers a user at the event
+     */
     public void joinOrLeaveEvent() {
-        Event event  = firstEvent();
+
         AtomicBoolean ok = new AtomicBoolean(false);
-        List<User> listPart = event.getParticipants();
+        List<User> listPart = currentEvent.getParticipants();
         listPart.forEach(user1 -> {
             if(user1.getId().equals(selectedUserDTO.getId())){
                 ok.set(true);
@@ -620,17 +694,21 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         });
         if(ok.get()){
             buttonInterestedNotInterested.setText("interested");
-            listPart.remove(0);
+            listPart.removeIf(user -> (user.getId().equals(selectedUserDTO.getId())));
+            eventService.updateEvent(currentEvent);
         }
         else {
             buttonInterestedNotInterested.setText("I am not interested");
             listPart.add(userService.getUser(selectedUserDTO.getId()));
+            eventService.updateEvent(currentEvent);
+
         }
-        // TODO: 30/12/2020 de aici trebuie sa continui maine cu paginarea 
+        labelNrParticipants.setText("Number Of Participants: "+ currentEvent.getParticipants().size()); //observer for labelNrParticipants
+
     }
 
     /**
-     * set button -> not interested if the user is in list of participants
+     * set button -> not interested, if the user is in list of participants
      *      *              otherwise set interested
      * @param idSelectedUser id of the user selected
      * @param idEvent id of the event
@@ -667,7 +745,190 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         List<Event> eventList = new ArrayList<>();
         events.forEach(eventList::add);
         return eventList.get(0);
+        
     }
 
 
+    /**
+     * go to the next Event page
+     */
+    public void goToTheNextPageEvent() {
+        pageEvents.nextPage();
+        Iterable<Event> eventIterable = eventService.getAllEvents(pageEvents);
+        List<Event> eventList = new ArrayList<>();
+        eventIterable.forEach(eventList::add);
+        if(eventList.size() != 0){
+            Event event = eventList.get(0);
+            currentEvent  = event;
+            initEvent(event);
+            setButtonInterested(selectedUserDTO.getId(),event.getId());
+
+        }
+        else {
+            pageEvents.previousPage();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other events");
+            alert.show();
+
+        }
+
+    }
+
+    /**
+     * go to the previous Event page
+     */
+    public void goToThePreviousPage() {
+        if(pageEvents.getNumberPage() > 1){//it must not be negative offset
+            pageEvents.previousPage();
+            Iterable<Event> eventIterable = eventService.getAllEvents(pageEvents);
+            List<Event> eventList = new ArrayList<>();
+            eventIterable.forEach(eventList::add);
+            Event event = eventList.get(0);
+            currentEvent = event;
+            initEvent(event);
+            setButtonInterested(selectedUserDTO.getId(),event.getId());
+
+        }
+        else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other events");
+                alert.show();
+            }
+
+    }
+
+
+    /**
+     * show the notifications
+     */
+    public void showNotification() {
+
+        paneNotification.setVisible(!paneNotification.isVisible());
+        initModelNotification();
+
+    }
+
+    private void initModelNotification() {
+        Iterable<Event> eventIterable = eventService.getAllEvents();
+        List<Event> eventList = new ArrayList<>();
+        eventIterable.forEach(event -> {
+            if( ChronoUnit.DAYS.between( LocalDate.now(),event.getDate()) <= 30 && event.isNotification()){
+                eventList.add(event);
+            }
+        });
+
+        if(!eventIterable.iterator().hasNext()){
+
+            modelNotification.setAll(eventList);
+            tableViewNotification.setPlaceholder(new Label("you have no notification!"));
+        }
+        else
+        {
+            modelNotification.setAll(eventList);
+        }
+
+    }
+
+    /**
+     * disable notification for selected user
+     */
+    public void disableNotification() {
+        Event event = tableViewNotification.getSelectionModel().getSelectedItem();
+        event.setNotification(false);
+        eventService.updateEvent(event);
+        initModelNotification();
+    }
+
+    /**
+     * method that show the Pane when you can create a event
+     */
+    public void showPaneCreateEvent() {
+        paneEventPhotoAndLabels.setVisible(false);
+
+        rectanglePhotoCreateEvent.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResourceAsStream("photos/photoStandardEvent.jpg") )));
+        pathPhotoCreateEvent = "";
+
+
+        paneEventCreateEvent.setVisible(true);
+    }
+
+    /**
+     * method that create a new event and post it
+     */
+    public void createEventAndPosts() {
+
+        List<User> participants = new ArrayList<>();
+        participants.add(userService.getUser(selectedUserDTO.getId()));
+
+
+        Photo photo;
+        if(!pathPhotoCreateEvent.equals("")){
+            photo = new Photo(pathPhotoCreateEvent);
+            setPhotoEvent(photo,rectanglePhotoCreateEvent);
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR,"you must to select one photo");
+            alert.show();
+            return;
+        }
+        if(textFieldNameEventCreateEvent.getText().length() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"you must to introduce a name event");
+            alert.show();
+            return;
+        }
+        if(textFieldDescriptionCreateEvent.getText().length() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"you must to introduce a description");
+            alert.show();
+            return;
+        }
+        if(datePickerDateEvent.getEditor().getText().length() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"you must to introduce a date event");
+            alert.show();
+            return;
+        }
+
+        Event event = new Event(datePickerDateEvent.getValue(),textFieldNameEventCreateEvent.getText(),textFieldDescriptionCreateEvent.getText(),
+                photo,participants,true);
+
+        eventService.saveEvent(event);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,"post made successfully");
+        alert.show();
+
+        paneEventCreateEvent.setVisible(false);
+        paneEventPhotoAndLabels.setVisible(true);
+    }
+
+
+    /**
+     * method that cancel the event creation
+     */
+    public void discardCreateEvent() {
+        datePickerDateEvent.getEditor().clear();
+        textFieldDescriptionCreateEvent.clear();
+        textFieldNameEventCreateEvent.clear();
+        paneEventCreateEvent.setVisible(false);
+        paneEventPhotoAndLabels.setVisible(true);
+    }
+
+    public void addPhotoCreateEvent() {
+        FileInputStream fileInputStream = null;
+        String photoPath = getPhotoURL();
+        if(photoPath != null){
+            try {
+                fileInputStream = new FileInputStream(photoPath);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            rectanglePhotoCreateEvent.setFill(new ImagePattern(new Image( fileInputStream )));
+            pathPhotoCreateEvent = photoPath;
+
+        }
+        else{
+            pathPhotoCreateEvent = "";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"you don t selected any photos ");
+            alert.show();
+        }
+
+
+    }
 }

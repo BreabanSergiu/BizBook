@@ -1,7 +1,11 @@
 package socialnetwork.domain;
 
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class Event extends Entity<Long> {
@@ -11,15 +15,28 @@ public class Event extends Entity<Long> {
     private String description;
     private Photo photo;
     private List<User> participants;
+    private boolean notification;
 
-    public Event(LocalDate date, String nume, String descriere, Photo photo, List<User> participants) {
+    public Event(LocalDate date, String name, String description, Photo photo, List<User> participants, boolean notification) {
         this.date = date;
-        this.name = nume;
-        this.description = descriere;
+        this.name = name;
+        this.description = description;
         this.photo = photo;
         this.participants = participants;
+        this.notification = notification;
     }
 
+    public boolean isNotification() {
+        return notification;
+    }
+
+    public void setNotification(boolean notification) {
+        this.notification = notification;
+    }
+
+    public String getNotificationString(){
+        return getName() +" event take place in "+ ChronoUnit.DAYS.between( LocalDate.now(),getDate()) +" days";
+    }
     public LocalDate getDate() {
         return date;
     }
@@ -48,6 +65,7 @@ public class Event extends Entity<Long> {
         return photo;
     }
 
+
     public void setPhoto(Photo photo) {
         this.photo = photo;
     }
@@ -59,6 +77,8 @@ public class Event extends Entity<Long> {
     public void setParticipants(List<User> participants) {
         this.participants = participants;
     }
+
+
 
     @Override
     public String toString() {
