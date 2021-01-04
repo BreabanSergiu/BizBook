@@ -30,4 +30,12 @@ public class Page {
     public void setNumberPage(int numberPage) {
         this.numberPage = numberPage;
     }
+
+    public void nextPage(){
+        setNumberPage(getNumberPage()+1);
+    }
+
+    public void previousPage(){
+        setNumberPage(getNumberPage()-1);
+    }
 }

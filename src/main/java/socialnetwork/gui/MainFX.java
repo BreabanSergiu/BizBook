@@ -82,7 +82,7 @@ public class MainFX extends Application {
         Repository<Long,Message> messageDbRepository = new MessageDbRepository(url,username,pasword,  userDbRepository);
         Repository<Long,FriendshipRequest> friendshipRequestDbRepository = new FriendshipRequestDbRepository(url,username,pasword,userDbRepository);
         Repository<Long, Photo> photoDbRepository = new PhotoDbRepository(url,username,pasword);
-        Repository<Long, Event> eventDbRepository = new EventDbRepository(url,username,pasword,userDbRepository);
+        EventDbRepository  eventDbRepository = new EventDbRepository(url,username,pasword,userDbRepository);
         //file
         String fileName= ApplicationContext.getPROPERTIES().getProperty("data.socialnetwork.users");
         Repository<Long, User> userFileRepository = new UserFile(fileName
