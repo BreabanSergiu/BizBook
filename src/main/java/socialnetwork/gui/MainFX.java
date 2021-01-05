@@ -24,6 +24,7 @@ import socialnetwork.repository.database.*;
 import socialnetwork.repository.file.*;
 import socialnetwork.service.*;
 import socialnetwork.utils.Constants;
+import socialnetwork.utils.Password;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,6 +42,7 @@ public class MainFX extends Application {
     private static FriendshipRequestService friendshipRequestService ;
     private static PhotoService photoService;
     private static EventService eventService;
+    private static CredentialService credentialService;
 
 
 
@@ -68,10 +70,11 @@ public class MainFX extends Application {
         introductionController.setMessageService(messageService);
         introductionController.setPhotoService(photoService);
         introductionController.setEventService(eventService);
+        introductionController.setCredentialService(credentialService);
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException {
 
         //db
         final String url = ApplicationContext.getPROPERTIES().getProperty("database.socialnetwork.url");
@@ -83,6 +86,7 @@ public class MainFX extends Application {
         FriendshipRequestDbRepository friendshipRequestDbRepository = new FriendshipRequestDbRepository(url,username,pasword,userDbRepository);
         Repository<Long, Photo> photoDbRepository = new PhotoDbRepository(url,username,pasword);
         EventDbRepository  eventDbRepository = new EventDbRepository(url,username,pasword,userDbRepository);
+        CredentialsDbRepository credentialsDbRepository = new CredentialsDbRepository(url,username,pasword);
         //file
         String fileName= ApplicationContext.getPROPERTIES().getProperty("data.socialnetwork.users");
         Repository<Long, User> userFileRepository = new UserFile(fileName
@@ -115,7 +119,9 @@ public class MainFX extends Application {
         friendshipRequestService = new FriendshipRequestService(friendshipRequestDbRepository,friendshipDbRepository);
         photoService = new PhotoService(photoDbRepository);
         eventService = new EventService(eventDbRepository);
+        credentialService = new CredentialService(credentialsDbRepository);
        launch(args);
+
 
 
 

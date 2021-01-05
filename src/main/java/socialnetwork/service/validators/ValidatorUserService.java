@@ -6,7 +6,7 @@ public class ValidatorUserService<T> implements Validator<T>{
 
     @Override
     public void validateAdd(T entity) throws ValidationException {
-        if(entity != null){
+        if(entity == null){
             throw new ValidationException("The user already exists!\n");
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -136,8 +137,12 @@
             </Pane>
          </children>
       </Pane>
-      <Label fx:id="labelLogout" layoutX="14.0" layoutY="15.0" onMouseClicked="#Logout" prefHeight="27.0" prefWidth="28.0" translateY="-3.0" />
-      <Label layoutX="47.0" layoutY="14.0" text="Logout" translateY="-3.0" />
+      <Group layoutX="14.0" layoutY="11.0" onMouseClicked="#Logout">
+         <children>
+            <Label fx:id="labelLogout" layoutY="1.0"  prefHeight="27.0" prefWidth="28.0" translateY="-3.0" />
+            <Label layoutX="33.0" text="Logout" translateY="-3.0" />
+         </children>
+      </Group>
 
     </children>
 </AnchorPane>
