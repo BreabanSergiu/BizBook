@@ -2,9 +2,7 @@ package socialnetwork.repository.database;
 
 import org.graalvm.compiler.lir.LIR;
 import org.postgresql.util.PSQLException;
-import socialnetwork.domain.Friendship;
-import socialnetwork.domain.Tuple;
-import socialnetwork.domain.User;
+import socialnetwork.domain.*;
 import socialnetwork.domain.message.Message;
 import socialnetwork.repository.Repository;
 import socialnetwork.utils.Constants;
@@ -165,6 +163,50 @@ public class MessageDbRepository implements Repository<Long, Message> {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+
+
+    public Iterable<Message> findAll(Page curentPage){
+        List<Message> messageList = new ArrayList<>();
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
+
+
+            String command = "SELECT * FROM messages LIMIT "+ curentPage.getSizePage()+
+                    " OFFSET " + (curentPage.getNumberPage()-1)*curentPage.getSizePage();
+
+            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Long idMessages = resultSet.getLong("id");
+                messageList.add(findOne(idMessages));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return messageList;
+    }
+
+    public Iterable<Message> findAll(Page curentPage,Long idUser){
+        List<Message> messageList = new ArrayList<>();
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
+
+            String command = "SELECT * FROM messages WHERE \"to\" ~* '"+idUser+",' or \"to\" ~* '," +
+                    idUser+"' or \"to\" ~* '^"+idUser+"$'" +
+                    " LIMIT "+curentPage.getSizePage() +" OFFSET "+(curentPage.getNumberPage()-1)*curentPage.getSizePage();
+
+            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Long idMessages = resultSet.getLong("id");
+                messageList.add(findOne(idMessages));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return messageList;
     }
 
     @Override

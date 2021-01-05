@@ -1,6 +1,7 @@
 package socialnetwork.repository.database;
 
 import org.postgresql.util.PSQLException;
+import socialnetwork.domain.Page;
 import socialnetwork.domain.User;
 import socialnetwork.domain.message.FriendshipRequest;
 import socialnetwork.domain.message.Message;
@@ -88,6 +89,60 @@ public class FriendshipRequestDbRepository implements Repository<Long, Friendshi
             e.printStackTrace();
         }
         return friendshipRequests;
+    }
+
+    /**
+     *
+     * @param curentPage Page
+     * @param idUser Long, id of the user we want the friendship Request
+     * @return return all FriendshipRequest to user with speciefied id
+     */
+    public Iterable<FriendshipRequest> findAll(Page curentPage, Long idUser){
+        List<FriendshipRequest> friendshipRequestList = new ArrayList<>();
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
+
+            String command = "SELECT * FROM \"friendshipRequests\" WHERE \"to\" = '"+idUser+
+                    "' LIMIT "+curentPage.getSizePage() +" OFFSET "+(curentPage.getNumberPage()-1)*curentPage.getSizePage();
+
+            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Long idFriendsfipRequest = resultSet.getLong("id");
+                friendshipRequestList.add(findOne(idFriendsfipRequest));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return friendshipRequestList;
+    }
+
+    /**
+     *
+     *
+     * @param status String, status of FriendshipRequest
+     * @param curentPage Page
+     * @param idUser Long, id of the user we want the friendship Request
+     * @return return all FriendshipRequest to user with speciefied id
+     */
+    public Iterable<FriendshipRequest> findAll(Page curentPage, Long idUser,String status){
+        List<FriendshipRequest> friendshipRequestList = new ArrayList<>();
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
+
+            String command = "SELECT * FROM \"friendshipRequests\" WHERE \"to\" = '"+idUser +"' AND \"status\" = '"+status+
+                    "' LIMIT "+curentPage.getSizePage() +" OFFSET "+(curentPage.getNumberPage()-1)*curentPage.getSizePage();
+
+            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Long idFriendsfipRequest = resultSet.getLong("id");
+                friendshipRequestList.add(findOne(idFriendsfipRequest));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return friendshipRequestList;
     }
 
     @Override

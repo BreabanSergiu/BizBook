@@ -1,10 +1,12 @@
 package socialnetwork.service;
 
+import socialnetwork.domain.Page;
 import socialnetwork.domain.User;
 import socialnetwork.domain.message.Message;
 import socialnetwork.domain.validators.ValidationException;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
+import socialnetwork.repository.database.MessageDbRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,13 +15,13 @@ import java.util.List;
 
 public class MessageService {
 
-    private Repository<Long, Message> repositoryMessage;
+    private MessageDbRepository repositoryMessage;
 
     /**
      *  Constructor that creates the Message
      * @param repositoryMessage Repository<T></>
      */
-    public MessageService(Repository<Long, Message> repositoryMessage) {
+    public MessageService(MessageDbRepository repositoryMessage) {
         this.repositoryMessage = repositoryMessage;
     }
 
@@ -42,8 +44,8 @@ public class MessageService {
 
     /**
      * return all receive messages of user with long id
-     * @param id
-     * @return
+     * @param id Long , id of the user
+     * @return all receive messages of user with long id
      */
     public Iterable<Message> getAllMessagesToUser(Long id){
 
@@ -62,12 +64,23 @@ public class MessageService {
         return filterList;
     }
 
+    /**
+     * method that return one message
+     * @param id id of selected user
+     * @return one message
+     */
     public Message getMessage (Long id){
         return repositoryMessage.findOne(id);
     }
 
 
-
+    /**
+     * method that returns all messages between one date
+     * @param id id of selected user
+     * @param startDate start Date for received messages
+     * @param endDate end Date for received messages
+     * @return all messages between one date
+     */
    public List<Message> getMessagesBetweenDate(Long id, LocalDate startDate,LocalDate endDate){
        List<Message> messageList = new ArrayList<>();
 
@@ -81,6 +94,14 @@ public class MessageService {
 
    }
 
+    /**
+     * method that returns all messages between one date and received from one friend
+     * @param idUser id of selected user
+     * @param idFriend id of the selected user's friend
+     * @param startDate start Date for received messages
+     * @param endDate end Date for received messages
+     * @return all messages between one date and received from one friend
+     */
    public List<Message> getAllMessageFromOneFriendBetweenDate(Long idUser, Long idFriend,LocalDate startDate,LocalDate endDate){
        List<Message> messageList = new ArrayList<>();
        Iterable<Message> messages = getAllMessagesToUser(idUser);
@@ -96,6 +117,28 @@ public class MessageService {
        }
        return messageList;
    }
+
+
+    /**
+     * method that return all messages from currentPage
+     * @param currentPage Page, the page where we want to get the messages from
+     * @return all messages from currentPage
+     */
+   public Iterable<Message> getAllMessages(Page currentPage){
+       return repositoryMessage.findAll(currentPage);
+   }
+
+    /**
+     * method that return all receive messages of user with id idUser
+     * @param idUser Long, id of the user
+     * @param currentPage Page , the page where we want to get the messages from
+     * @return all receive messages of user with id idUser
+     */
+   public Iterable<Message> getAllMessagesToUser(Long idUser,Page currentPage){
+      return repositoryMessage.findAll(currentPage,idUser);
+   }
+
+
 
 
 }
