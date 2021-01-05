@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="356.0" prefWidth="704.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/introduction.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.IntroductionController">
    <children>
-      <Label fx:id="labelWelcome" layoutX="436.0" layoutY="53.0" text="User Login" />
-      <Button fx:id="ButtonAccountUser" layoutX="424.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#loginUser" prefHeight="27.0" prefWidth="161.0" text="Login" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="labelNameApplication" layoutX="168.0" layoutY="238.0" text="BizBook" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../preview.png" />
          </image>
       </ImageView>
-      <PasswordField fx:id="passwordFiled" layoutX="424.0" layoutY="157.0" promptText=" Password" />
-      <TextField fx:id="textFieldUsername" layoutX="424.0" layoutY="119.0" promptText="Username or Email" />
-      <Label fx:id="labelCreateYourAccount" layoutX="440.0" layoutY="293.0" text="Create your Account" />
+      <Pane fx:id="paneLogin" layoutX="403.0" layoutY="22.0" prefHeight="309.0" prefWidth="200.0" visible="false">
+         <children>
+            <TextField fx:id="textFieldUsername" layoutX="20.0" layoutY="72.0" promptText="Username or Email" />
+            <Button fx:id="ButtonAccountUser" layoutX="20.0" layoutY="155.0" mnemonicParsing="false" onMouseClicked="#loginUser" prefHeight="27.0" prefWidth="161.0" text="Login" />
+            <PasswordField fx:id="passwordFiled" layoutX="20.0" layoutY="108.0" promptText=" Password" />
+            <Label fx:id="labelCreateYourAccount" alignment="CENTER" layoutX="20.0" layoutY="243.0" onMouseClicked="#showPaneCreateAccount" prefHeight="27.0" prefWidth="161.0" text="Create your Account" />
+         </children>
+      </Pane>
+      <Pane fx:id="paneCreateAccount" layoutX="403.0" layoutY="24.0" prefHeight="309.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="textFieldUserNameCreateAccout" layoutX="20.0" layoutY="123.0" promptText="User Name" />
+            <PasswordField fx:id="textFieldPasswordCreateAccout" layoutX="20.0" layoutY="166.0" promptText="Password" />
+            <Button fx:id="buttonSignUpCreateAccount" layoutX="39.0" layoutY="225.0" mnemonicParsing="false" onMouseClicked="#signUp" prefHeight="27.0" prefWidth="123.0" text="Sign Up" />
+            <TextField fx:id="textFieldLastName" layoutX="20.0" layoutY="81.0" promptText="Last Name" />
+            <TextField fx:id="textFieldFirstName" layoutX="20.0" layoutY="41.0" promptText="First Name" />
+         </children></Pane>
    </children>
 </AnchorPane>

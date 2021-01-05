@@ -81,16 +81,18 @@ public class UserDbRepository implements Repository<Long, User> {
             try{
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
-                    return null;
+                    Long id = resultSet.getLong("id");
+                    entity.setId(id);
+                    return entity;
                 }
 
             }catch(PSQLException e){
-                return entity;
+                return null;
             }
        } catch (SQLException throwables) {
            throwables.printStackTrace();
        }
-       return entity;
+       return null;
     }
 
     @Override

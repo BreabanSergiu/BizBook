@@ -9,11 +9,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import socialnetwork.domain.Credential;
 import socialnetwork.domain.User;
 import socialnetwork.domain.UserDTO;
 import socialnetwork.service.*;
+import socialnetwork.utils.Password;
 
 import java.io.IOException;
 
@@ -22,37 +25,59 @@ public class IntroductionController {
     UserService userService;
     FriendshipService friendshipService;
     FriendshipRequestService friendshipRequestService;
-    ObservableList<UserDTO> modelUserDTO = FXCollections.observableArrayList();
     MessageService messageService;
     PhotoService photoService;
     EventService eventService;
+    CredentialService credentialService;
     UserDTO selectedUserDTO;
 
-    @FXML
-    TableColumn<UserDTO, String> tableColumnFirstName;
-    @FXML
-    TableColumn<UserDTO, String> tableColumnLastName;
-    @FXML
-    TableView<UserDTO> tableViewIntroduction;
     Stage introductionStage;
 
     @FXML
     TextField textFieldUsername;
 
     @FXML
-    public void initialize() {
-//        tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-//        tableColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-//        tableViewIntroduction.setItems(modelUserDTO);
+    PasswordField passwordFiled;
+
+    @FXML
+    Pane paneLogin;
+
+    @FXML
+    Pane paneCreateAccount;
+
+    @FXML
+    TextField textFieldFirstName;
+
+    @FXML
+    TextField textFieldLastName;
+
+    @FXML
+    Button buttonSignUpCreateAccount;
+
+    @FXML
+    PasswordField textFieldPasswordCreateAccout;
+
+    @FXML
+    TextField textFieldUserNameCreateAccout;
+
+
+    @FXML
+    void initialize(){
+        setPaneVisible();
+    }
+
+    /**
+     * method that set Pane visibility
+     */
+    private void setPaneVisible() {
+        paneCreateAccount.setVisible(false);
+        paneLogin.setVisible(true);
     }
 
     public void setUserService(UserService userService, Stage introductionStage) {
         this.userService = userService;
         this.introductionStage = introductionStage;
-//        modelUserDTO.setAll(this.userService.getAllUserDTO());
-//        if (modelUserDTO.size() == 0) {
-//            tableViewIntroduction.setPlaceholder(new Label("There are no users in the social network"));
-//        }
+//
     }
 
     public void setFriendshipService(FriendshipService friendshipService) {
@@ -67,21 +92,29 @@ public class IntroductionController {
 //        }
 //    }
 
-    public void loginUser() {
+    public void loginUser() throws IllegalAccessException {
         //functie case simuleaza logarea luan id in field username si returneaza un user
-        User user = userService.getUser(Long.parseLong(textFieldUsername.getText()));
-        textFieldUsername.clear();
+        String userName  = textFieldUsername.getText();
 
-        if(user != null){
-            selectedUserDTO = new UserDTO(user.getFirstName(),user.getLastName());
-            selectedUserDTO.setId(user.getId());
-            showAccountUserStage(selectedUserDTO);
+        Credential credential = credentialService.findOne(userName);
+        if(credential != null){
+            if(Password.checkPassword(passwordFiled.getText(),credential.getPassword())){
+                 User user = userService.getUser(credential.getId());
+                textFieldUsername.clear();
+                passwordFiled.clear();
+                UserDTO userDTO = new UserDTO(user.getFirstName(),user.getLastName());
+                userDTO.setId(user.getId());
+                showAccountUserStage(userDTO);
+            }
         }
-        else
-        {
-            Alert alert  = new Alert(Alert.AlertType.ERROR,"Doesn't exist this username");
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR,"invalid Credential");
             alert.show();
         }
+
+
+
+
     }
     private void showAccountUserStage(UserDTO selectedUserDTO) {
         try {
@@ -131,5 +164,45 @@ public class IntroductionController {
 
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    public void showPaneCreateAccount() {
+        paneLogin.setVisible(false);
+        paneCreateAccount.setVisible(true);
+    }
+
+
+    public void signUp() {
+
+        String firstName = textFieldFirstName.getText();
+        String lastName = textFieldLastName.getText();
+        User user = new User(firstName,lastName);
+        User userAdded = userService.addUser(user);
+
+        Credential credential = new Credential(textFieldUserNameCreateAccout.getText(), Password.hashPassword(textFieldPasswordCreateAccout.getText()));
+        if(userAdded != null){
+            credential.setId(userAdded.getId());
+            Credential addedCredential = credentialService.addCredential(credential);
+
+            if(addedCredential != null){
+                paneCreateAccount.setVisible(false);
+                paneLogin.setVisible(true);
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR,"error finding up the Credential");
+                alert.show();
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR,"error finding up the User");
+            alert.show();
+        }
+
+
+
+    }
+
+    public void setCredentialService(CredentialService credentialService) {
+        this.credentialService = credentialService;
     }
 }

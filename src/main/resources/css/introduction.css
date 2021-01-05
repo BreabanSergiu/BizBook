@@ -25,11 +25,14 @@
 
 
 #ButtonAccountUser:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #6d8ea0;
 }
 
 #ButtonAccountUser{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #83aac1;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
 
 }
 
@@ -49,9 +52,24 @@
 }
 #labelCreateYourAccount{
     -fx-background-color: false;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #ffffff;
+}
+
+#labelCreateYourAccount:hover{
+    -fx-background-color: #83aac1;
+    -fx-background-radius: 8;
+    -fx-font-size: 16px;
 }
 
 #ButtonAccountUser{
     -fx-background-radius: 10;
+}
+
+#labelNameApplication{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 24px;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
 }

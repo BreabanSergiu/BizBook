@@ -17,7 +17,7 @@ import socialnetwork.ui.Ui;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalAccessException {
 //        String fileName=ApplicationContext.getPROPERTIES().getProperty("data.socialnetwork.users");
 //        Repository<Long, User> userFileRepository = new UserFile(fileName
 //                , new UserValidator());
