@@ -16,7 +16,7 @@
     -fx-background-color: #455760;
 }
 #buttonAddFriendship{
-    -fx-background-color: #5b7280;
+    -fx-background-color: #536976;
     -fx-text-fill: white;
     -fx-font-size: 16;
 }
@@ -25,7 +25,7 @@
     -fx-background-color: #455760;
 }
 #buttonDeleteFriendship{
-    -fx-background-color: #5b7280;
+    -fx-background-color: #536976;
     -fx-text-fill: white;
     -fx-font-size: 16;
 
@@ -35,7 +35,7 @@
     -fx-background-color: #455760;
 }
 #buttonFriendshipRequest{
-    -fx-background-color: #5b7280;
+    -fx-background-color: #536976;
     -fx-text-fill: white;
     -fx-font-size: 16;
 }
@@ -45,7 +45,7 @@
 
 }
 #butonMessages{
-    -fx-background-color: #5b7280;
+    -fx-background-color: #536976;
     -fx-text-fill: white;
     -fx-font-size: 16;
 
@@ -56,7 +56,7 @@
 }
 
 #buttonReports{
-    -fx-background-color: #5b7280;
+    -fx-background-color: #536976;
     -fx-text-fill: white;
     -fx-font-size: 16;
 }
@@ -66,7 +66,7 @@
 }
 
 #buttonEvents{
-    -fx-background-color: #5b7280;
+    -fx-background-color: #536976;
     -fx-text-fill: white;
     -fx-font-size: 16;
 }
@@ -92,17 +92,46 @@ set image on labels
 }
 
 #labelNextPage{
-    -fx-background-image: url("forwardd.png");
+    -fx-background-image: url("forward.png");
+    -fx-background-repeat: no-repeat;
+
+}
+
+#labelEventIcon{
+    -fx-background-image: url("event.png");
     -fx-background-repeat: no-repeat;
 }
+
 
 #labelPreviousPage{
     -fx-background-image: url("back.png");
     -fx-background-repeat: no-repeat;
 }
 
+
+#labelReportsIcon{
+    -fx-background-image: url("reports.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelMessagesIcon{
+    -fx-background-image: url("messages.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelDeleteFriendshipIcon{
+    -fx-background-image: url("minus.png");
+    -fx-background-repeat: no-repeat;
+}
+
+
 #labelNextPageEvent{
     -fx-background-image: url("nextPageEvent.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelAddRequestIcon{
+    -fx-background-image: url("plus.png");
     -fx-background-repeat: no-repeat;
 }
 
@@ -111,16 +140,18 @@ set image on labels
     -fx-background-repeat: no-repeat;
 }
 
+
+#labelViewRequestsIcons{
+    -fx-background-image: url("view.png");
+    -fx-background-repeat: no-repeat;
+}
+
 #labelUserName{
     -fx-font-size: 26px;
     -fx-font-weight: bold;
     -fx-font-family: "Times New Roman";
     -fx-background-color: none;
-    -fx-effect: dropshadow(three-pass-box, rgb(16, 106, 109), 10, 0, 0, 0);
-    -fx-border-color: linear-gradient(#43b1b3, #647f8f);
-    -fx-border-width: 5 0 5 0;
-    -fx-border-radius: 10;
-    -fx-text-fill: #8ad4e2;;
+    -fx-text-fill: #ffffff;;
 }
 
 #paneAccount{
@@ -342,6 +373,11 @@ set text fill when selected on cell
 
 .table-row-cell:selected{
     -fx-background-color: #607988;
+}
+
+#labelLogout{
+    -fx-background-image: url("logout.png");
+    -fx-background-repeat: no-repeat;
 }
 
 

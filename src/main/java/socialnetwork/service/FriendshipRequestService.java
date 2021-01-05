@@ -1,9 +1,11 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.Friendship;
+import socialnetwork.domain.Page;
 import socialnetwork.domain.Tuple;
 import socialnetwork.domain.message.FriendshipRequest;
 import socialnetwork.repository.Repository;
+import socialnetwork.repository.database.FriendshipRequestDbRepository;
 import socialnetwork.service.validators.Validator;
 import socialnetwork.service.validators.ValidatorFriendshipRequestService;
 import socialnetwork.service.validators.ValidatorUserService;
@@ -16,11 +18,11 @@ import socialnetwork.utils.observer.Observer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.LongFunction;
+
 
 public class FriendshipRequestService implements Observable<FriendshipRequestChangeEvent> {
 
-    private Repository<Long, FriendshipRequest> requestRepository ;
+    private FriendshipRequestDbRepository requestRepository ;
     private ValidatorFriendshipRequestService friendshipRequestValidator = new ValidatorFriendshipRequestService();
     private Repository<Tuple<Long,Long>,Friendship> friendshipRepository;
     List<Observer<FriendshipRequestChangeEvent>> observers = new ArrayList<>();
@@ -29,7 +31,7 @@ public class FriendshipRequestService implements Observable<FriendshipRequestCha
      *
      * @param requestRepository Repository<T></>
      */
-    public FriendshipRequestService(Repository<Long, FriendshipRequest> requestRepository,
+    public FriendshipRequestService(FriendshipRequestDbRepository requestRepository,
                                     Repository<Tuple<Long,Long>,Friendship> friendshipRepository) {
         this.requestRepository = requestRepository;
         this.friendshipRequestValidator = friendshipRequestValidator;
@@ -88,6 +90,15 @@ public class FriendshipRequestService implements Observable<FriendshipRequestCha
         return listPendingRequest;
     }
 
+    /**
+     * Method that return all FriendshipRequest from Page curentPage of user with specified id
+     * @param id Long, id of the User
+     * @param currentPage Page
+     * @return all FriendshipRequest from Page curentPage of user with specified id
+     */
+    public Iterable<FriendshipRequest> getAllPendingRequest(Long id , Page currentPage){
+        return requestRepository.findAll(currentPage,id,"pending");
+    }
     /**
      *
      * @param id -id of user

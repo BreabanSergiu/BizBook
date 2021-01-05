@@ -1,16 +1,16 @@
 package socialnetwork.repository.database;
 
 import org.postgresql.util.PSQLException;
-import socialnetwork.domain.Friendship;
-import socialnetwork.domain.Tuple;
-import socialnetwork.domain.User;
+import socialnetwork.domain.*;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Friendship> {
@@ -71,6 +71,33 @@ public class FriendshipDbRepository implements Repository<Tuple<Long,Long>, Frie
             e.printStackTrace();
         }
         return friendships;
+    }
+
+    /**
+     * Method that gets the list of all events on a specific Page
+     * @param curentPage Page, representing the Page containing the events
+     * @return Iterable<Friendship></>, representing the list of Events on that Page
+     */
+    public Iterable<Friendship> findAll(Page curentPage,Long idUser){
+        List<Friendship> friendshipList = new ArrayList<>();
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
+
+           // SELECT * from friendships where "idUser1" = '4' OR "idUser2" = '4'
+            String command = "SELECT * FROM friendships WHERE \"idUser1\" = '"+idUser +"' OR \"idUser2\" = '"+idUser+"' LIMIT "+ curentPage.getSizePage()+
+                    " OFFSET " + (curentPage.getNumberPage()-1)*curentPage.getSizePage();
+
+            PreparedStatement preparedStatement = connection.prepareStatement(command);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Long idFriendship1 = resultSet.getLong("idUser1");
+                Long idFriendship2 = resultSet.getLong("idUser2");
+                friendshipList.add(findOne(new Tuple<>(idFriendship1,idFriendship2)));
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return friendshipList;
     }
 
     @Override

@@ -40,7 +40,7 @@ package socialnetwork.controller;
         import java.util.ArrayList;
         import java.util.List;
         import java.util.concurrent.atomic.AtomicBoolean;
-        import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class AccountUserController implements Observer<FriendshipChangeEvent>{
     ObservableList<UserDTO> modelFriends = FXCollections.observableArrayList();
@@ -59,7 +59,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     Event currentEvent;
     private String pathPhotoCreateEvent;
     private final Page pageEvents = new Page(1,1);
-
+    private final Page pageFriends = new Page(11,1);
+    private final Page pageMessages = new Page(11,1);
+    private final Page pageFriendshipRequests = new Page(11,1);
 
     @FXML
     Button buttonAddFriendship;
@@ -218,6 +220,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     }
 
 
+    /**
+     * set visibility for Pane
+     */
     private void setPaneVisible() {
         paneAccount.setVisible(true);
         paneEvents.setVisible(false);
@@ -307,15 +312,18 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         friendshipService.addObserver(this);
 
         if (selectedUserDTO != null) {
-            labelUserName.setText("Hello, " + selectedUserDTO.getFirstName()+" "+selectedUserDTO.getLastName());
+            labelUserName.setText(selectedUserDTO.getFirstName()+" "+selectedUserDTO.getLastName());
             initModelFriends();
             initModelMessages();
             initModelRequests();
         }
     }
 
+    /**
+     * init model FriendshipRequest
+     */
     private void initModelRequests() {
-        Iterable<FriendshipRequest> friendshipRequests = this.friendshipRequestService.getAllPendingRequest(selectedUserDTO.getId());
+        Iterable<FriendshipRequest> friendshipRequests = this.friendshipRequestService.getAllPendingRequest(selectedUserDTO.getId(),pageFriendshipRequests);
         List<FriendshipRequest> friendshipRequestList = new ArrayList<>();
         friendshipRequests.forEach(friendshipRequestList::add);
 
@@ -328,8 +336,11 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         }
     }
 
+    /**
+     * init model Messages
+     */
     private void initModelMessages() {
-        Iterable<Message> messages = this.messageService.getAllMessagesToUser(selectedUserDTO.getId());
+        Iterable<Message> messages = this.messageService.getAllMessagesToUser(selectedUserDTO.getId(),pageMessages);
         List<Message> messageList = new ArrayList<>();
         messages.forEach(messageList::add);
         if(!messages.iterator().hasNext()){
@@ -341,8 +352,11 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         }
     }
 
+    /**
+     * init model Friends
+     */
     private void initModelFriends(){
-        Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId());
+        Iterable<Friendship> friendships = this.friendshipService.getAllFriendshipsUser(selectedUserDTO.getId(),pageFriends);
         List<UserDTO> listFriends = new ArrayList();
         friendships.forEach(friendship -> {
             if(friendship.getId().getLeft().equals(selectedUserDTO.getId()))
@@ -364,6 +378,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     }
 
 
+    /**
+     * method that delete a freindship
+     */
     public void deleteFriendship(){
         UserDTO userDTO = tableViewFriends.getSelectionModel().getSelectedItem();
         if(userDTO != null){
@@ -389,6 +406,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         }
     }
 
+    /**
+     * show view add FriendShipRequest
+     */
     public void addFriendshipRequest(){
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -424,7 +444,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
 
     }
 
-
+    /**
+     * show view FriendshipRequest
+     */
     public void viewFriendshipRequest(){
             try{
                 FXMLLoader loader = new FXMLLoader();
@@ -458,6 +480,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
             initModelRequests();
     }
 
+    /**
+     * show view Messages
+     */
     public void viewMessages() {
 
         try{
@@ -490,6 +515,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
             e.printStackTrace();
         }
     }
+
 
     public void setStages(Stage accountUserStage, Stage introductionStage) {
         this.introductionStage = introductionStage;
@@ -908,6 +934,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         paneEventPhotoAndLabels.setVisible(true);
     }
 
+    /**
+     * add new photo to the event
+     */
     public void addPhotoCreateEvent() {
         FileInputStream fileInputStream = null;
         String photoPath = getPhotoURL();
@@ -930,5 +959,149 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         }
 
 
+    }
+
+
+    /**
+     * method that set previous Page for Messages, Friends and FriendshipRequests
+     */
+    public void previousPageFriendsMessagesRequests() {
+        if(tabPaneFriendsMessagesRequests.getSelectionModel().getSelectedItem().getId().equals(tabFriends.getId())){
+            previousPageFriends();
+        }
+        else
+            if(tabPaneFriendsMessagesRequests.getSelectionModel().getSelectedItem().getId().equals(tabMessages.getId())){
+                previousPageMessages();
+            }
+            else
+                if (tabPaneFriendsMessagesRequests.getSelectionModel().getSelectedItem().getId().equals(tabFriendshipRequests.getId())){
+                    previousPageFriendshipRequests();
+                }
+    }
+
+    /**
+     * method that set previous Page for FriendshipRequests
+     */
+    private void previousPageFriendshipRequests() {
+
+        if(pageFriendshipRequests.getNumberPage() > 1){
+            pageFriendshipRequests.previousPage();
+            initModelRequests();
+        }else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other FriendshipRequest");
+            alert.show();
+        }
+    }
+
+    /**
+     * method that set previous Page for Messages
+     */
+    private void previousPageMessages() {
+        if(pageMessages.getNumberPage() > 1){
+            pageMessages.previousPage();
+            initModelMessages();
+
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other Messages");
+           alert.show();
+        }
+    }
+
+    /**
+     * method that set previous Page for Friends
+     */
+    private void previousPageFriends() {
+        if(pageFriends.getNumberPage() > 1){
+            pageFriends.previousPage();
+            initModelFriends();
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other Friendship");
+            alert.show();
+        }
+    }
+
+    /**
+     * method that set the next Page for Friends, Messages and Friendship requests
+     */
+    public void nextPageFriendsMessagesRequests() {
+        if(tabPaneFriendsMessagesRequests.getSelectionModel().getSelectedItem().getId().equals(tabFriends.getId())){
+            nextPageFriends();
+        }
+        else
+            if(tabPaneFriendsMessagesRequests.getSelectionModel().getSelectedItem().getId().equals(tabMessages.getId())){
+                nextPageMessages();
+            }
+            else
+                if(tabPaneFriendsMessagesRequests.getSelectionModel().getSelectedItem().getId().equals(tabFriendshipRequests.getId())){
+                    nextPageFriendshipRequests();
+                }
+    }
+
+    /**
+     * method that set the next Page for Friendship Requests
+     */
+    private void nextPageFriendshipRequests() {
+        pageFriendshipRequests.nextPage();
+        Iterable<FriendshipRequest> friendshipRequestIterable = friendshipRequestService.getAllPendingRequest(selectedUserDTO.getId(),pageFriendshipRequests);
+        List<Message> messageList = new ArrayList<>();
+        friendshipRequestIterable.forEach(messageList::add);
+        if(messageList.size() != 0){
+            initModelRequests();
+        }
+        else
+        {
+            pageFriendshipRequests.previousPage();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other FriendshipRequest");
+            alert.show();
+        }
+    }
+
+    /**
+     * method that set the next Page for Messages
+     */
+    private void nextPageMessages() {
+        pageMessages.nextPage();
+        Iterable<Message> messageIterable = messageService.getAllMessagesToUser(selectedUserDTO.getId(),pageMessages);
+        List<Message> messageList = new ArrayList<>();
+        messageIterable.forEach(messageList::add);
+        if(messageList.size() != 0){
+            initModelMessages();
+        }
+        else{
+            pageMessages.previousPage();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other Messages");
+            alert.show();
+        }
+
+    }
+
+    /**
+     * method that set the next Page for Friends
+     */
+    private void nextPageFriends() {
+        pageFriends.nextPage();
+        Iterable<Friendship> friendshipIterable = friendshipService.getAllFriendshipsUser(selectedUserDTO.getId(),pageFriends);
+        List<Friendship> friendshipList = new ArrayList<>();
+        friendshipIterable.forEach(friendshipList::add);
+        if(friendshipList.size() != 0 ){
+            initModelFriends();
+        }else
+        {
+            pageFriends.previousPage();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,"no other Friendship");
+            alert.show();
+
+        }
+    }
+
+    /**
+     * method that logout a user
+     */
+    public void Logout() {
+        accountUserStage.hide();
+        introductionStage.show();
     }
 }

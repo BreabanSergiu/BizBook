@@ -96,7 +96,6 @@ public class IntroductionController {
             accountUserStage.initModality(Modality.APPLICATION_MODAL);
             accountUserStage.setOnCloseRequest(event -> {
                 introductionStage.show();
-                //tableViewIntroduction.getSelectionModel().clearSelection();
                 textFieldUsername.clear();
             });
             textFieldUsername.clear();

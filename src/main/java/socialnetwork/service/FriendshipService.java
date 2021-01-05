@@ -1,11 +1,13 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.Friendship;
+import socialnetwork.domain.Page;
 import socialnetwork.domain.Tuple;
 import socialnetwork.domain.User;
 import socialnetwork.domain.message.Message;
 import socialnetwork.domain.validators.ValidationException;
 import socialnetwork.repository.Repository;
+import socialnetwork.repository.database.FriendshipDbRepository;
 import socialnetwork.service.validators.Validator;
 import socialnetwork.service.validators.ValidatorFriendshipService;
 import socialnetwork.utils.events.ChangeEventType;
@@ -19,13 +21,13 @@ import java.util.List;
 
 public class FriendshipService implements Observable<FriendshipChangeEvent> {
 
-    private Repository<Tuple<Long,Long>, Friendship> repositoryFriendship;
+    private FriendshipDbRepository repositoryFriendship;
     private Repository<Long, User> repositoryUsers;
     private Validator<Friendship> validatorFriendshipService = new ValidatorFriendshipService<>();
     private  List<Observer<FriendshipChangeEvent>> observers = new ArrayList<>();
 
 
-    public FriendshipService(Repository<Tuple<Long, Long>, Friendship> repositoryFriendship, Repository<Long, User> repositoryUsers) {
+    public FriendshipService(FriendshipDbRepository repositoryFriendship, Repository<Long, User> repositoryUsers) {
         this.repositoryFriendship = repositoryFriendship;
         this.repositoryUsers = repositoryUsers;
     }
@@ -79,6 +81,11 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
     }
 
 
+    /**
+     * method that return all friends of the user with specified id
+     * @param userID
+     * @return all friends of the user with specified id
+     */
     public Iterable<Friendship> getAllFriendshipsUser(Long userID) {
         Iterable<Friendship> allFriendships = this.getAll();
         List<Friendship> listFriendshipsUser = new ArrayList<>();
@@ -87,6 +94,16 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
                 listFriendshipsUser.add(friendship);
         });
         return listFriendshipsUser;
+    }
+
+    /**
+     * method that return all friends of the user with specified id from Page
+     * @param idUser Long
+     * @param currentPage Page
+     * @return all friends of the user with specified id from Page
+     */
+    public Iterable<Friendship> getAllFriendshipsUser(Long idUser, Page currentPage){
+        return  repositoryFriendship.findAll(currentPage,idUser);
     }
 
     /**
@@ -115,6 +132,13 @@ public class FriendshipService implements Observable<FriendshipChangeEvent> {
     }
 
 
+    /**
+     * method that return all user friendships created between given date
+     * @param id  Long, id of user
+     * @param startDate LocalDate
+     * @param endDate  LocalDate
+     * @return all usernfriendships created between given date
+     */
     public List<Friendship> getFriendsBetweenDate(Long id, LocalDate startDate,LocalDate endDate){
 
         Iterable<Friendship> friendships = getAllFriendshipsUser(id);
