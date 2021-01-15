@@ -6,10 +6,8 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Screenshots](#screenshots)
-* [Further Development](#further-development)
 * [Status](#status)
 * [Inspiration](#inspiration)
-* [License](#license)
 * [Notes](#notes)
 
 ## General info
@@ -71,7 +69,4 @@ My inspiration came from main social media application - Instagram and Facebook.
 ## Notes
 Please note that the Logo, the Icons and the Images are taken from https://www.iconfinder.com/, https://www.flaticon.com/.
 
-## License
->You can check out the full license [here](https://github.com/DascaluCosmin/Berry/blob/main/LICENSE)
 
-This project is licensed under the terms of the **MIT** license.
