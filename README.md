@@ -51,15 +51,6 @@ It started as a university project, but i continued it improving the graphical i
 </p>
 
 
-## Further Development
-List of additional features/improvements include:
-* Comments and shares
-* Creation of groups
-* Adds
-* Games
-* Web porting
-* Recommender system
-
 ## Status
 Project is: finished. 
 
