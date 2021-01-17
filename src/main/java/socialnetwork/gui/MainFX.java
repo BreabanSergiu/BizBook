@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -52,6 +53,7 @@ public class MainFX extends Application {
         initView(primaryStage);
         primaryStage.setTitle("Window");
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image("/photos/preview.png"));
 
         primaryStage.show();
 

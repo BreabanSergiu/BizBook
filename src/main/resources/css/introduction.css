@@ -73,3 +73,10 @@
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat;
 }
+
+#labelBackCreateAccout{
+    -fx-background-image: url('back.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;;
+
+}

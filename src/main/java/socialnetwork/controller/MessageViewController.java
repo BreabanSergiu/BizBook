@@ -271,8 +271,8 @@ public class MessageViewController {
     public void exitButtonOnAction() {
 
         messageViewStage.hide();
-        accountUserStage.hide();
-        introductionStage.show();
+        accountUserStage.show();
+
 
     }
 

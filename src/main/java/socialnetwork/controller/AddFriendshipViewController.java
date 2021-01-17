@@ -130,8 +130,8 @@ public class AddFriendshipViewController {
 
     public void exitButtonOnAction() {
         addFriendshipRequestStage.hide();
-        accountUserStage.hide();
-        introductionStage.show();
+        accountUserStage.show();
+
     }
 
     public void setStages(Stage accountUserStage, Stage introductionStage, Stage addFriendshipRequestStage) {

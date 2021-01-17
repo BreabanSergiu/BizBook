@@ -192,6 +192,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
     @FXML
     void initialize() {
 
+
         tableColumnFirstNameFriends.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("firstName"));
         tableColumnLastNameFriends.setCellValueFactory(new PropertyValueFactory<UserDTO, String>("lastName"));
 
@@ -417,7 +418,6 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
 
             Stage addFriendshipRequestStage = new Stage();
             addFriendshipRequestStage.setTitle("Send friendship request");
-            addFriendshipRequestStage.setResizable(false);
             addFriendshipRequestStage.initModality(Modality.APPLICATION_MODAL);
 
             Scene scene = new Scene(root);
@@ -425,16 +425,18 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
 
             AddFriendshipViewController addFriendshipViewController = loader.getController();
 
-            addFriendshipRequestStage.setOnCloseRequest(event -> {
-                accountUserStage.show();
-            });
-            accountUserStage.hide();
+//            addFriendshipRequestStage.setOnCloseRequest(event -> {
+//                accountUserStage.show();
+//            });
+//            accountUserStage.show();
 
 
             addFriendshipViewController.setFriendshipService(friendshipService);
             addFriendshipViewController.setUserService(userService,selectedUserDTO);
             addFriendshipViewController.setFriendshipRequestService(friendshipRequestService);
             addFriendshipViewController.setStages(accountUserStage, introductionStage, addFriendshipRequestStage);
+            addFriendshipRequestStage.setX(595);
+            addFriendshipRequestStage.setY(129);
             addFriendshipRequestStage.show();
 
         }catch (IOException e){
@@ -456,13 +458,17 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
                 Stage frienshipRequestViewStage = new Stage();
                 frienshipRequestViewStage.setScene(new Scene(root));
                 frienshipRequestViewStage.setTitle("Friendship Request");
+                frienshipRequestViewStage.initModality(Modality.APPLICATION_MODAL);
+                frienshipRequestViewStage.setX(595);
+                frienshipRequestViewStage.setY(129);
                 frienshipRequestViewStage.getIcons().add(new Image(getClass().getResourceAsStream("/css/1.jpg")));
+
                 frienshipRequestViewStage.show();
 
-                frienshipRequestViewStage.setOnCloseRequest(event -> {
-                    accountUserStage.show();
-                });
-                accountUserStage.hide();
+//                frienshipRequestViewStage.setOnCloseRequest(event -> {
+//                    accountUserStage.show();
+//                });
+//                accountUserStage.hide();
 
               FriendshipRequestViewController friendshipRequestViewController = loader.getController();
                friendshipRequestViewController.setFriendshipRequestService(friendshipRequestService,selectedUserDTO);
@@ -494,16 +500,19 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
             Stage messageViewStage = new Stage();
             messageViewStage.setScene(new Scene(root));
             messageViewStage.setTitle("Message");
+            messageViewStage.initModality(Modality.APPLICATION_MODAL);//set the priority stage
+            messageViewStage.setX(595);
+            messageViewStage.setY(129);
             messageViewStage.show();
 
             MessageViewController messageViewController = loader.getController();
 
-            messageViewStage.setOnCloseRequest(event -> {
-                accountUserStage.show();
-            });
-
-
-            accountUserStage.hide();
+//            messageViewStage.setOnCloseRequest(event -> {
+//                accountUserStage.show();
+//            });
+//
+//
+//            accountUserStage.hide();
 
             messageViewController.setFriendshipService(friendshipService);
             messageViewController.setSelectedUserDTO(selectedUserDTO);
@@ -533,6 +542,9 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
             Scene scene = new Scene(root);
             reportViewStage.setScene(scene);
             reportViewStage.setTitle("Reports");;
+            reportViewStage.initModality(Modality.APPLICATION_MODAL);//set the priority of this stage
+            reportViewStage.setX(595);
+            reportViewStage.setY(129);
             reportViewStage.show();
 
             ReportViewController reportViewController = loader.getController();
@@ -540,6 +552,7 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
             reportViewController.setFriendshipService(friendshipService);
             reportViewController.setSelectedUserDTO(selectedUserDTO);
             reportViewController.setUserService(userService);
+            reportViewController.setStages(accountUserStage,reportViewStage);
             reportViewController.populatePieChart();
 
 
@@ -836,12 +849,18 @@ public class AccountUserController implements Observer<FriendshipChangeEvent>{
         Iterable<Event> eventIterable = eventService.getAllEvents();
         List<Event> eventList = new ArrayList<>();
         eventIterable.forEach(event -> {
-            if( ChronoUnit.DAYS.between( LocalDate.now(),event.getDate()) <= 30 && event.isNotification()){
-                eventList.add(event);
+            if( ChronoUnit.DAYS.between( LocalDate.now(),event.getDate()) <= 30 && event.isNotification() ){
+                List<User> parts = event.getParticipants();
+                parts.forEach(user->{
+                    if(user.getId().equals(selectedUserDTO.getId())){
+                        eventList.add(event);
+                    }
+                });
+
             }
         });
 
-        if(!eventIterable.iterator().hasNext()){
+        if(eventList.size() == 0){
 
             modelNotification.setAll(eventList);
             tableViewNotification.setPlaceholder(new Label("you have no notification!"));

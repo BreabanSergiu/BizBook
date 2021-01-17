@@ -1,7 +1,7 @@
 .label {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #176473;
+    -fx-text-fill: white;
     -fx-font-family: "Arial Black";
     -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
 
@@ -18,4 +18,138 @@
     -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
 }
 
+#labelBackMessages{
+    -fx-background-image: url("back.png");
+    -fx-background-repeat: no-repeat;
+}
 
+
+#tabPane .tab-header-area .tab-header-background{
+    -fx-background-color: #536976;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: #39484f;
+}
+
+.tab-label{
+    -fx-text-fill: white;
+}
+
+#tabImbox{
+    -fx-background-color: #495d66;
+    -fx-border-color:#536976;
+
+}
+
+#tabImbox:hover{
+    -fx-background-color: #5b7280;
+
+}
+
+#tabCompose{
+    -fx-background-color: #495d66;
+    -fx-border-color:#536976;
+}
+
+#tabCompose:hover{
+    -fx-background-color: #5b7280;
+}
+
+
+#anchorPaneImbox{
+    -fx-background-color: #536976;
+
+}
+
+#anchorPaneCompose{
+    -fx-background-color: #536976;
+}
+
+#butonAdd{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+}
+
+#butonAdd:hover{
+    -fx-background-color: #5b7280;
+}
+
+#buttonRemove{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+}
+
+#buttonRemove:hover{
+    -fx-background-color: #5b7280;
+}
+
+#textFieldMessage{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-font-size: 15;
+}
+
+#buttonSend{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+#buttonSend:hover{
+    -fx-background-color: #5b7280;
+}
+
+#tableViewUnselected{
+    -fx-background-color: #495d66;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 15;
+    -fx-border-color: #354248;
+}
+
+#tableViewSelected{
+    -fx-background-color: #495d66;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 15;
+    -fx-border-color: #354248;
+}
+
+#tableViewInbox{
+    -fx-background-color: #495d66;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 14;
+    -fx-border-color: #354248;
+}
+
+
+.table-row-cell:selected{
+    -fx-background-color: #607988;
+}
+
+.table-row-cell:hover{
+    -fx-background-color: #607988;
+}
+
+.table-view .column-header{
+    -fx-background-color: #5b7280;
+}
+
+#textFieldMessageInbox{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-font-size: 15;
+}
+
+#buttonReply{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+#buttonReply:hover{
+    -fx-background-color: #5b7280;
+}

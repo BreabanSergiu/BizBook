@@ -1,0 +1,93 @@
+#labelBackReport{
+    -fx-background-image: url('back.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;;
+}
+
+
+.table-row-cell:selected{
+    -fx-background-color: #607988;
+}
+
+.table-row-cell:hover{
+    -fx-background-color: #607988;
+}
+
+.table-view .column-header{
+    -fx-background-color: #5b7280;
+}
+
+#button1{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+
+}
+
+#button1:hover{
+    -fx-background-color: #5b7280;
+}
+
+#button2{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+
+}
+
+#button2:hover{
+    -fx-background-color: #5b7280;
+}
+
+#buttonclear{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+
+}
+
+#buttonclear:hover{
+    -fx-background-color: #5b7280;
+}
+
+#buttonGeneratePdfReport{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+
+}
+
+#buttonGeneratePdfReport:hover{
+    -fx-background-color: #5b7280;
+}
+
+#datePickerStartDate{
+    -fx-background-color: #495d66;
+    -fx-text-fill: white;
+}
+
+#datePickerEndDate{
+    -fx-background-color: #495d66;
+    -fx-text-fill: red;
+}
+
+#tableViewFriends{
+    -fx-background-color: #495d66;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 14;
+    -fx-border-color: #354248;
+}
+
+.label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Black";
+    -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
+
+}
+.chart-legend{
+    -fx-background-color: transparent;
+}
+
+#datePickerEndDate.label{
+    -fx-text-fill: red;
+    -fx-background-color: red;
+}
+

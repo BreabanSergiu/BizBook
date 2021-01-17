@@ -93,11 +93,14 @@ public class EventDbRepository implements Repository<Long, Event> {
                 String listParticipants = resultSet.getString("participants");
                 String[] parts = listParticipants.split(",");
                 List<User> listUsersParticipants = new ArrayList<>();
-                for(String p : parts){
-                    Long id = Long.parseLong(p);
-                    User user = userDbRepository.findOne(id);
-                    listUsersParticipants.add(user);
+                if(parts.length != 0){
+                    for(String p : parts){
+                        Long id = Long.parseLong(p);
+                        User user = userDbRepository.findOne(id);
+                        listUsersParticipants.add(user);
+                    }
                 }
+
 
                 String description = resultSet.getString("description");
                 String notification = resultSet.getString("notification");
@@ -192,7 +195,10 @@ public class EventDbRepository implements Repository<Long, Event> {
             for(User user:part){
                 participants = participants + user.getId()+",";
             }
-            participants = participants.substring(0,participants.length()-1);
+            if(participants.length() > 0){
+                participants = participants.substring(0,participants.length()-1);
+
+            }
 
             String command = "UPDATE events SET" +
                     " date = '"+entity.getDate() +
@@ -218,11 +224,14 @@ public class EventDbRepository implements Repository<Long, Event> {
                 String listParticipants = resultSet.getString("participants");
                 String[] parts = listParticipants.split(",");
                 List<User> listUsersParticipants = new ArrayList<>();
-                for(String p : parts){
-                    Long id = Long.parseLong(p);
-                    User user = userDbRepository.findOne(id);
-                    listUsersParticipants.add(user);
+                if(parts.length != 0){
+                    for(String p : parts){
+                        Long id = Long.parseLong(p);
+                        User user = userDbRepository.findOne(id);
+                        listUsersParticipants.add(user);
+                    }
                 }
+
 
                 String description = resultSet.getString("description");
                 String notification = resultSet.getString("notification");

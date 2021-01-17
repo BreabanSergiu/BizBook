@@ -204,8 +204,8 @@ public class FriendshipRequestViewController implements Observer<FriendshipReque
 
     public void exitButtonOnAction() {
         frienshipRequestViewStage.hide();
-        accountUserStage.hide();
-        introductionStage.show();
+        accountUserStage.show();
+
     }
 
     public void setStages(Stage accountUserStage, Stage introductionStage, Stage frienshipRequestViewStage) {
