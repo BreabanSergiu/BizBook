@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -8,55 +9,54 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="476.0" prefWidth="872.0" style="-fx-background-color: linear-gradient(#BBD2C5,#536976,#3b4160)" stylesheets="@../css/messageView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.MessageViewController">
+<AnchorPane prefHeight="456.0" prefWidth="640.0" style="-fx-background-color: #536976" stylesheets="@../css/messageView.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.MessageViewController">
    <children>
-      <TabPane fx:id="tabPane" layoutX="47.0" layoutY="42.0" prefHeight="350.0" prefWidth="778.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" layoutX="22.0" layoutY="63.0" prefHeight="350.0" prefWidth="597.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Compose">
+          <Tab fx:id="tabCompose" text="Compose">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="anchorPaneCompose" minHeight="0.0" minWidth="0.0" prefHeight="317.0" prefWidth="720.0">
                      <children>
-                        <TableView fx:id="tableViewUnselected" layoutX="50.0" layoutY="27.0" prefHeight="200.0" prefWidth="240.0">
+                        <TableView fx:id="tableViewUnselected" prefHeight="247.0" prefWidth="241.0">
                           <columns>
-                            <TableColumn fx:id="tableColumnFirstNameUnselected" prefWidth="119.0" text="FirstName" />
-                            <TableColumn fx:id="tableColumnLastNameUnselected" prefWidth="120.0" text="LastName" />
+                            <TableColumn fx:id="tableColumnFirstNameUnselected" prefWidth="115.0" text="FirstName" />
+                            <TableColumn fx:id="tableColumnLastNameUnselected" prefWidth="122.0" text="LastName" />
                           </columns>
                         </TableView>
-                        <TableView fx:id="tableViewSelected" layoutX="389.0" layoutY="27.0" prefHeight="200.0" prefWidth="222.0">
+                        <TableView fx:id="tableViewSelected" layoutX="337.0" prefHeight="247.0" prefWidth="243.0">
                           <columns>
-                            <TableColumn fx:id="tableColumnFirstNameSelected" prefWidth="111.0" text="FirstName" />
-                            <TableColumn fx:id="tableColumnLastNameSelected" prefWidth="110.0" text="LastName" />
+                            <TableColumn fx:id="tableColumnFirstNameSelected" prefWidth="117.0" text="FirstName" />
+                            <TableColumn fx:id="tableColumnLastNameSelected" prefWidth="122.0" text="LastName" />
                           </columns>
                         </TableView>
-                        <Button fx:id="butonAdd" layoutX="324.0" layoutY="100.0" mnemonicParsing="false" onMouseClicked="#addUserForMessage" text="&gt;" />
-                        <Button fx:id="buttonRemove" layoutX="324.0" layoutY="145.0" mnemonicParsing="false" onMouseClicked="#removeUserFromMessageTable" text="&lt;" />
-                        <Button fx:id="buttonSend" layoutX="235.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#sendTheMessage" text="Send" />
-                        <TextField fx:id="textFieldMessage" layoutX="309.0" layoutY="249.0" promptText="Message" />
+                        <Button fx:id="butonAdd" layoutX="272.0" layoutY="82.0" mnemonicParsing="false" onMouseClicked="#addUserForMessage" text="&gt;" />
+                        <Button fx:id="buttonRemove" layoutX="273.0" layoutY="129.0" mnemonicParsing="false" onMouseClicked="#removeUserFromMessageTable" text="&lt;" />
+                        <Button fx:id="buttonSend" layoutX="513.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#sendTheMessage" prefHeight="29.0" prefWidth="63.0" text="Send" />
+                        <TextField fx:id="textFieldMessage" layoutY="270.0" prefHeight="29.0" prefWidth="498.0" promptText="Message" />
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Inbox">
+          <Tab fx:id="tabImbox" text="Inbox">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="anchorPaneImbox" minHeight="0.0" minWidth="0.0" prefHeight="317.0" prefWidth="604.0">
                      <children>
-                        <TableView fx:id="tableViewInbox" layoutX="31.0" layoutY="27.0" prefHeight="220.0" prefWidth="710.0">
+                        <TableView fx:id="tableViewInbox" prefHeight="247.0" prefWidth="596.0">
                           <columns>
                             <TableColumn fx:id="tableColumnFirstName" prefWidth="95.0" text="FirstName" />
                             <TableColumn fx:id="tableColumnLastName" prefWidth="95.0" text="LastName" />
-                              <TableColumn fx:id="tableColumnDate" prefWidth="164.0" text="Date" />
-                              <TableColumn fx:id="tableColumnMessage" prefWidth="355.0" text="Message" />
+                              <TableColumn fx:id="tableColumnDate" prefWidth="144.0" text="Date" />
+                              <TableColumn fx:id="tableColumnMessage" prefWidth="258.0" text="Message" />
                           </columns>
                         </TableView>
-                        <TextField fx:id="textFieldMessageInbox" layoutX="33.0" layoutY="270.0" prefHeight="27.0" prefWidth="622.0" promptText="message" />
-                        <Button fx:id="buttonReply" layoutX="696.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#replyMessage" text="reply" />
+                        <TextField fx:id="textFieldMessageInbox" layoutY="270.0" prefHeight="27.0" prefWidth="535.0" promptText="message" />
+                        <Button fx:id="buttonReply" layoutX="547.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#replyMessage" text="reply" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
-
-      <Button fx:id="buttonSignOff" layoutX="765.0" layoutY="421.0" mnemonicParsing="false" onMouseClicked="#exitButtonOnAction" text="Sign off" />
+      <Label fx:id="labelBackMessages" layoutX="22.0" layoutY="17.0" onMouseClicked="#exitButtonOnAction" prefHeight="32.0" prefWidth="57.0" />
 
    </children>
 </AnchorPane>

@@ -14,7 +14,7 @@
       <Label fx:id="labelNameApplication" layoutX="168.0" layoutY="238.0" text="BizBook" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../preview.png" />
+            <Image url="@../photos/preview.png" />
          </image>
       </ImageView>
       <Pane fx:id="paneLogin" layoutX="403.0" layoutY="22.0" prefHeight="309.0" prefWidth="200.0" visible="false">
@@ -32,6 +32,7 @@
             <Button fx:id="buttonSignUpCreateAccount" layoutX="39.0" layoutY="225.0" mnemonicParsing="false" onMouseClicked="#signUp" prefHeight="27.0" prefWidth="123.0" text="Sign Up" />
             <TextField fx:id="textFieldLastName" layoutX="20.0" layoutY="81.0" promptText="Last Name" />
             <TextField fx:id="textFieldFirstName" layoutX="20.0" layoutY="41.0" promptText="First Name" />
+            <Label fx:id="labelBackCreateAccout" layoutX="14.0" layoutY="6.0" prefHeight="27.0" prefWidth="26.0" onMouseClicked="#switchPaneCreateAccountToLogin"/>
          </children></Pane>
    </children>
 </AnchorPane>

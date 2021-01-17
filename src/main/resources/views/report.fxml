@@ -8,23 +8,24 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="415.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ReportViewController">
+<AnchorPane prefHeight="456.0" prefWidth="640.0" style=" -fx-background-color: #536976;" stylesheets="@../css/report.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ReportViewController">
    <children>
-      <Button fx:id="buttonGeneratePdfReport" layoutX="549.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#generatePDF" prefHeight="27.0" prefWidth="127.0" text="generate pdf report" />
+      <Button fx:id="buttonGeneratePdfReport" layoutX="483.0" layoutY="391.0" mnemonicParsing="false" onMouseClicked="#generatePDF" prefHeight="27.0" prefWidth="127.0" text="generate pdf report" />
 
-      <Button id="button1" fx:id="button1" layoutX="220.0" layoutY="29.0" onAction="#handleButtonMessagesReport" prefHeight="27.0" prefWidth="167.0" text="Load PieChart Messages" />
-      <Button id="button2" fx:id="button2" layoutX="25.0" layoutY="29.0" onAction="#handleButtonFriendsReport" prefHeight="27.0" prefWidth="180.0" text="Load PieChart Friends" />
-      <Button id="buttonclear" fx:id="buttonclear" layoutX="409.0" layoutY="358.0" onAction="#handleButtonClearAction" prefHeight="27.0" prefWidth="127.0" text="Clear PieChart" />
-      <PieChart fx:id="piechart" layoutX="25.0" layoutY="77.0" prefHeight="307.0" prefWidth="362.0" />
-      <TableView fx:id="tableViewFriends" layoutX="409.0" layoutY="77.0" prefHeight="264.0" prefWidth="267.0">
+      <Button id="button1" fx:id="button1" layoutX="175.0" layoutY="46.0" onAction="#handleButtonMessagesReport" prefHeight="29.0" prefWidth="138.0" text="Load Chart Messages" />
+      <Button id="button2" fx:id="button2" layoutX="13.0" layoutY="46.0" onAction="#handleButtonFriendsReport" prefHeight="27.0" prefWidth="144.0" text="Load PieChart Friends" />
+      <Button id="buttonclear" fx:id="buttonclear" layoutX="343.0" layoutY="390.0" onAction="#handleButtonClearAction" prefHeight="27.0" prefWidth="127.0" text="Clear PieChart" />
+      <PieChart fx:id="piechart" layoutX="11.0" layoutY="111.0" prefHeight="307.0" prefWidth="300.0" />
+      <TableView fx:id="tableViewFriends" layoutX="343.0" layoutY="101.0" prefHeight="264.0" prefWidth="267.0">
         <columns>
           <TableColumn fx:id="tableColumnFirstName" prefWidth="135.0" text="First Name" />
-          <TableColumn fx:id="tableColumnLastName" prefWidth="131.0" text="Last name" />
+          <TableColumn fx:id="tableColumnLastName" prefWidth="127.0" text="Last name" />
         </columns>
       </TableView>
-      <DatePicker fx:id="datePickerStartDate" layoutX="412.0" layoutY="29.0" prefHeight="27.0" prefWidth="120.0" promptText="start date" />
-      <DatePicker fx:id="datePickerEndDate" layoutX="556.0" layoutY="29.0" prefHeight="27.0" prefWidth="120.0" promptText="end date" />
+      <DatePicker fx:id="datePickerStartDate" layoutX="342.0" layoutY="46.0" prefHeight="27.0" prefWidth="120.0" promptText="start date" />
+      <DatePicker fx:id="datePickerEndDate" layoutX="488.0" layoutY="46.0" prefHeight="27.0" prefWidth="120.0" promptText="end date" />
       <Label fx:id="labelProcent" text="Label" />
+      <Label fx:id="labelBackReport" layoutX="15.0" layoutY="13.0" onMouseClicked="#backToAccount" prefHeight="27.0" prefWidth="30.0" />
 
 
 

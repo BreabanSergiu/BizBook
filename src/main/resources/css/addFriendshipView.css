@@ -2,9 +2,10 @@
 .label {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #176473;
+    -fx-text-fill: white;
     -fx-font-family: "Arial Black";
-    -fx-effect: dropshadow( gaussian , rgb(1, 17, 17), 0,0,0,1 );
+
+
 
 }
 
@@ -18,18 +19,63 @@
 
 
 #buttonSendFriendshipRequest:hover{
-    -fx-background-color: #a4efef;
+    -fx-background-color: #36434c;
 }
 
 #buttonSendFriendshipRequest{
-    -fx-background-color: linear-gradient(#b3eff1, #a1d2ee);
+    -fx-background-color: #5b7280;;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
 }
 
-#textFieldSearch{
-    -fx-background-color: linear-gradient(#a1d2ee,#b3eff1);
-}
+
 
 #textFieldMessage{
-    -fx-background-color: linear-gradient(#a1d2ee,#b3eff1);
+    -fx-background-color: #5b7280;;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-font-size: 16;
 }
 
+#tableViewNonFriends{
+    -fx-background-color: #495d66;
+    -fx-background-repeat: no-repeat;
+    -fx-font-size: 15;
+    -fx-border-color: #354248;
+
+}
+
+
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: #39484f;
+}
+
+
+.tab-label{
+    -fx-text-fill: white;
+}
+
+.table-row-cell:selected{
+    -fx-background-color: #607988;
+}
+
+.table-row-cell:hover{
+    -fx-background-color: #607988;
+}
+
+.table-view .column-header {
+    -fx-background-color: #5b7280;
+}
+
+
+#lableBackAddRequest{
+    -fx-background-image: url("back.png");
+    -fx-background-repeat: no-repeat;
+}
+
+#labelPhoto
+{
+    -fx-background-image: url("plane.png");
+    -fx-background-repeat: no-repeat;
+}

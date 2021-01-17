@@ -84,13 +84,6 @@ public class IntroductionController {
         this.friendshipService = friendshipService;
     }
 
-//    public void selectFriendsUser() {
-//        // TODO: 25/11/2020 aici trebe sa iau argumentele din campuri
-//        UserDTO selectedUserDTO = tableViewIntroduction.getSelectionModel().getSelectedItem();
-//        if (selectedUserDTO != null) {
-//            showAccountUserStage(selectedUserDTO);
-//        }
-//    }
 
     public void loginUser() throws IllegalAccessException {
         //functie case simuleaza logarea luan id in field username si returneaza un user
@@ -105,6 +98,10 @@ public class IntroductionController {
                 UserDTO userDTO = new UserDTO(user.getFirstName(),user.getLastName());
                 userDTO.setId(user.getId());
                 showAccountUserStage(userDTO);
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR,"invalid password");
+                alert.show();
             }
         }
         else{
@@ -134,6 +131,7 @@ public class IntroductionController {
             textFieldUsername.clear();
             Scene scene = new Scene(root);
             accountUserStage.setScene(scene);
+
             AccountUserController accountUserController = loader.getController();
             accountUserController.setAttributes(friendshipService, userService, selectedUserDTO,friendshipRequestService,messageService,photoService,eventService);
             accountUserController.setStages(accountUserStage,introductionStage);
@@ -142,7 +140,9 @@ public class IntroductionController {
             accountUserController.setButtonInterested(selectedUserDTO.getId(),accountUserController.firstEvent().getId());
 
             introductionStage.hide();
+
             accountUserStage.show();
+
         } catch ( IOException e) {
             e.printStackTrace();
         }
@@ -174,10 +174,41 @@ public class IntroductionController {
 
     public void signUp() {
 
+        if(textFieldFirstName.getText().length() == 0 ||
+                textFieldUserNameCreateAccout.getText().length() == 0 ||
+                textFieldLastName.getText().length() == 0 ||
+                textFieldPasswordCreateAccout.getText().length() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"you must fill all textField");
+            alert.show();
+            return;
+        }
+
+
+
         String firstName = textFieldFirstName.getText();
         String lastName = textFieldLastName.getText();
+
+        if(firstName.length() <= 3){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"first name must be longer than 3 characters!");
+            alert.show();
+            return;
+        }
+        if(lastName.length() <= 3){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"last name must be longer than 3 characters!");
+            alert.show();
+            return;
+        }
+
+        if(textFieldUserNameCreateAccout.getText().length() <= 3){
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Username must be longer than 3 characters!");
+            alert.show();
+            return;
+        }
+
+
         User user = new User(firstName,lastName);
         User userAdded = userService.addUser(user);
+
 
         Credential credential = new Credential(textFieldUserNameCreateAccout.getText(), Password.hashPassword(textFieldPasswordCreateAccout.getText()));
         if(userAdded != null){
@@ -197,6 +228,10 @@ public class IntroductionController {
             Alert alert = new Alert(Alert.AlertType.ERROR,"error finding up the User");
             alert.show();
         }
+        textFieldPasswordCreateAccout.clear();
+        textFieldLastName.clear();
+        textFieldFirstName.clear();
+        textFieldUserNameCreateAccout.clear();
 
 
 
@@ -204,5 +239,14 @@ public class IntroductionController {
 
     public void setCredentialService(CredentialService credentialService) {
         this.credentialService = credentialService;
+    }
+
+    public void switchPaneCreateAccountToLogin() {
+        textFieldPasswordCreateAccout.clear();
+        textFieldLastName.clear();
+        textFieldFirstName.clear();
+        textFieldUserNameCreateAccout.clear();
+        paneLogin.setVisible(true);
+        paneCreateAccount.setVisible(false);
     }
 }

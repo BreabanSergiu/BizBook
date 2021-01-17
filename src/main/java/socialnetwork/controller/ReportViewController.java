@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.util.ResourceUtils;
@@ -53,6 +54,8 @@ public class ReportViewController {
     ObservableList<UserDTO> model = FXCollections.observableArrayList();
     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
+    Stage accountStage;
+    Stage reportStage;
     @FXML
     Button buttonGeneratePdfReport;
 
@@ -354,7 +357,14 @@ public class ReportViewController {
     }
 
 
+    public void backToAccount() {
+        accountStage.show();
+        reportStage.hide();
 
+    }
 
-
+    public void setStages(Stage accountUserStage, Stage reportViewStage) {
+        this.accountStage = accountUserStage;
+        this.reportStage = reportViewStage;
+    }
 }
